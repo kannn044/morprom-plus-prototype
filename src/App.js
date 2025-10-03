@@ -91,6 +91,28 @@ const LoginModal = ({ onClose, onLogin }) => (
   </div>
 );
 
+// Success Modal Component
+const SuccessModal = ({ onClose }) => (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4">
+      <div className="text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+          <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <h3 className="text-xl font-bold text-gray-800">เข้าสู่ระบบเสร็จสิ้น</h3>
+      </div>
+      <button
+        onClick={onClose}
+        className="w-full bg-emerald-500 text-white py-3 rounded-lg font-medium hover:bg-emerald-600 transition"
+      >
+        ตกลง
+      </button>
+    </div>
+  </div>
+);
+
 // User Menu Component
 const UserMenu = ({ onLogout, onClose }) => (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -125,6 +147,7 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [showLoginModal, setShowLoginModal] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
+  const [showSuccessModal, setShowSuccessModal] = React.useState(false);
 
   const handleOfficialServiceClick = (service) => {
     if (!isLoggedIn) {
@@ -137,9 +160,13 @@ export default function App() {
 
   const handleLogin = (method) => {
     console.log('Logging in with:', method);
-    // Mock login - bypass authentication
-    setIsLoggedIn(true);
     setShowLoginModal(false);
+    setShowSuccessModal(true);
+    // Set logged in after showing success message
+    setTimeout(() => {
+      setIsLoggedIn(true);
+      setShowSuccessModal(false);
+    }, 1500);
   };
 
   const handleLogout = () => {
@@ -212,98 +239,113 @@ export default function App() {
                       <span className="font-bold text-sm">{link.label}</span>
                     </div>
                   ))}
-                </div>
-              </section>
+              </div>
+            </section>
 
-              <section>
-                <h2 className="text-lg font-bold text-white mb-4">Mini Apps</h2>
-                <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
-                  {miniApps.map(app => (
-                    <div key={app.id} className="flex-shrink-0 w-20 p-1 space-y-2 cursor-pointer rounded-lg hover:bg-white/20 transition backdrop-blur-sm">
-                      <div className="bg-white/30 rounded-full flex items-center justify-center aspect-square backdrop-blur-sm overflow-hidden">
-                        <img src={process.env.PUBLIC_URL + app.image} alt={app.label} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none' }} />
-                      </div>
-                      <p className="text-xs font-medium text-white leading-tight">{app.label}</p>
-                      <Badge color={app.badgeColor}>{app.badge}</Badge>
-                    </div>
-                  ))}
+            <section>
+              <h2 className="text-lg font-bold text-white mb-4">Mini Apps</h2>
+          <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
+            {miniApps.map(app => (
+                <div key={app.id} className="flex-shrink-0 w-20 p-1 space-y-2 cursor-pointer rounded-lg hover:bg-white/20 transition backdrop-blur-sm">
+                  <div className="bg-white/30 rounded-full flex items-center justify-center aspect-square backdrop-blur-sm overflow-hidden">
+                    <img src={process.env.PUBLIC_URL + app.image} alt={app.label} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none' }} />
+                  </div>
+                  <p className="text-xs font-medium text-white leading-tight">{app.label}</p>
+                  <Badge color={app.badgeColor}>{app.badge}</Badge>
                 </div>
-              </section>
-
-              {/* App Links */}
-              <section>
-                <h2 className="text-lg font-bold text-white mb-4">แอปพลิเคชันภายนอก</h2>
-                {!showAllAppLinks ? (
-                  <>
-                    <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
-                      {appLinks.slice(0, 6).map(service => (
-                        <div key={service.id} className="flex-shrink-0 w-20">
-                          <ServiceButton>
-                            <IconCircle>
-                              <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
-                            </IconCircle>
-                            <span className="text-xs font-medium text-white leading-tight text-center">
-                              {service.label}
-                            </span>
-                          </ServiceButton>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-center mt-4">
-                      <button
-                        onClick={() => setShowAllAppLinks(true)}
-                        className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
-                      >
-                        ดูเพิ่มเติม
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-4 gap-4">
-                      {appLinks.map(service => (
-                        <div key={service.id}>
-                          <ServiceButton>
-                            <IconCircle>
-                              <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
-                            </IconCircle>
-                            <span className="text-xs font-medium text-white leading-tight text-center">
-                              {service.label}
-                            </span>
-                          </ServiceButton>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-center mt-4">
-                      <button
-                        onClick={() => setShowAllAppLinks(false)}
-                        className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
-                      >
-                        ย่อลง
-                      </button>
-                    </div>
-                  </>
-                )}
-              </section>
-            </main>
+              ))}
           </div>
-        </div>
-      </div>
+        </section>
 
-      {/* Modals */}
-      {showLoginModal && (
-        <LoginModal
-          onClose={() => setShowLoginModal(false)}
-          onLogin={handleLogin}
-        />
-      )}
+        {/* App Links */}
+        <section>
+          <h2 className="text-lg font-bold text-white mb-4">แอปพลิเคชันภายนอก</h2>
+          {!showAllAppLinks ? (
+            <>
+              <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
+                {appLinks.slice(0, 6).map(service => (
+                  <div key={service.id} className="flex-shrink-0 w-20">
+                    <ServiceButton>
+                      <IconCircle>
+                        <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
+                      </IconCircle>
+                      <span className="text-xs font-medium text-white leading-tight text-center">
+                        {service.label}
+                      </span>
+                    </ServiceButton>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => setShowAllAppLinks(true)}
+                  className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                >
+                  ดูเพิ่มเติม
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="grid grid-cols-4 gap-4">
+                {appLinks.map(service => (
+                  <div key={service.id}>
+                    <ServiceButton>
+                      <IconCircle>
+                        <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
+                      </IconCircle>
+                      <span className="text-xs font-medium text-white leading-tight text-center">
+                        {service.label}
+                      </span>
+                    </ServiceButton>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-center mt-4">
+                <button
+                  onClick={() => setShowAllAppLinks(false)}
+                  className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                >
+                  ย่อลง
+                </button>
+              </div>
+            </>
+          )}
+        </section>
+      </main>
+    </div >
+        </div >
+      </div >
 
-      {showUserMenu && (
-        <UserMenu
-          onLogout={handleLogout}
-          onClose={() => setShowUserMenu(false)}
-        />
-      )}
+    {/* Modals */ }
+  {
+    showLoginModal && (
+      <LoginModal
+        onClose={() => setShowLoginModal(false)}
+        onLogin={handleLogin}
+      />
+    )
+  }
+
+  {
+    showSuccessModal && (
+      <SuccessModal
+        onClose={() => {
+          setShowSuccessModal(false);
+          setIsLoggedIn(true);
+        }}
+      />
+    )
+  }
+
+  {
+    showUserMenu && (
+      <UserMenu
+        onLogout={handleLogout}
+        onClose={() => setShowUserMenu(false)}
+      />
+    )
+  }
     </>
   );
 }
