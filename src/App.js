@@ -37,8 +37,8 @@ const SearchIcon = () => (
 );
 
 // Reusable components
-const ServiceButton = ({ children, className = "" }) => (
-  <div className={`flex flex-col items-center space-y-2 cursor-pointer rounded-lg hover:bg-white/20 p-2 transition ${className}`}>
+const ServiceButton = ({ children, className = "", onClick }) => (
+  <div onClick={onClick} className={`flex flex-col items-center space-y-2 cursor-pointer rounded-lg hover:bg-white/20 p-2 transition ${className}`}>
     {children}
   </div>
 );
@@ -61,9 +61,102 @@ const Badge = ({ color, children }) => {
   );
 };
 
+// Login Modal Component
+const LoginModal = ({ onClose, onLogin }) => (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4">
+      <h3 className="text-xl font-bold text-gray-800 text-center">เข้าสู่ระบบ</h3>
+      <p className="text-sm text-gray-600 text-center">เลือกวิธีการเข้าสู่ระบบ</p>
+      <div className="space-y-3">
+        <button
+          onClick={() => onLogin('ThaiD')}
+          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition"
+        >
+          เข้าสู่ระบบด้วย ThaiD
+        </button>
+        <button
+          onClick={() => onLogin('HealthID')}
+          className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 rounded-lg font-medium hover:from-emerald-600 hover:to-emerald-700 transition"
+        >
+          เข้าสู่ระบบด้วย HealthID
+        </button>
+      </div>
+      <button
+        onClick={onClose}
+        className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
+      >
+        ยกเลิก
+      </button>
+    </div>
+  </div>
+);
+
+// User Menu Component
+const UserMenu = ({ onLogout, onClose }) => (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4">
+      <div className="text-center">
+        <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-2xl font-bold">
+          ส
+        </div>
+        <h3 className="text-xl font-bold text-gray-800">สมหมาย ทองสุก</h3>
+        <p className="text-sm text-gray-500 mt-1">บัญชีผู้ใช้</p>
+      </div>
+      <div className="space-y-2">
+        <button
+          onClick={onLogout}
+          className="w-full bg-red-500 text-white py-3 rounded-lg font-medium hover:bg-red-600 transition"
+        >
+          ออกจากระบบ
+        </button>
+        <button
+          onClick={onClose}
+          className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
+        >
+          ปิด
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 export default function App() {
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
+  const [showUserMenu, setShowUserMenu] = React.useState(false);
+
+  const handleOfficialServiceClick = (service) => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+    } else {
+      // Navigate to service or handle service logic
+      console.log('Accessing service:', service.label);
+    }
+  };
+
+  const handleLogin = (method) => {
+    console.log('Logging in with:', method);
+    // Mock login - bypass authentication
+    setIsLoggedIn(true);
+    setShowLoginModal(false);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setShowUserMenu(false);
+    // Clear session
+    sessionStorage.clear();
+    localStorage.clear();
+  };
+
+  const handleUserClick = () => {
+    if (isLoggedIn) {
+      setShowUserMenu(true);
+    } else {
+      setShowLoginModal(true);
+    }
+  };
 
   return (
     <>
@@ -94,7 +187,12 @@ export default function App() {
                 </div>
               </div>
               <div className="flex items-center space-x-2 flex-shrink-0">
-                <span className="text-sm font-medium text-white">เข้าสู่ระบบ</span>
+                <button
+                  onClick={handleUserClick}
+                  className="text-sm font-medium text-white hover:text-white/80 transition cursor-pointer"
+                >
+                  {isLoggedIn ? 'สมหมาย ทองสุก' : 'เข้าสู่ระบบ'}
+                </button>
               </div>
             </header>
 
@@ -103,7 +201,11 @@ export default function App() {
                 <h2 className="text-lg font-bold text-white mb-4">บริการของรัฐบาล</h2>
                 <div className="flex space-x-3 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
                   {officialServices.map(link => (
-                    <div key={link.id} className={`flex-shrink-0 w-32 h-40 bg-gradient-to-br ${link.gradient} rounded-xl p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}>
+                    <div
+                      key={link.id}
+                      onClick={() => handleOfficialServiceClick(link)}
+                      className={`flex-shrink-0 w-32 h-40 bg-gradient-to-br ${link.gradient} rounded-xl p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}
+                    >
                       <div className="w-full h-20 flex items-center justify-center mb-2">
                         <img src={process.env.PUBLIC_URL + link.image} alt={link.label} className="w-16 h-16 object-contain" onError={(e) => { e.target.style.display = 'none' }} />
                       </div>
@@ -187,6 +289,21 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          onLogin={handleLogin}
+        />
+      )}
+
+      {showUserMenu && (
+        <UserMenu
+          onLogout={handleLogout}
+          onClose={() => setShowUserMenu(false)}
+        />
+      )}
     </>
   );
 }
