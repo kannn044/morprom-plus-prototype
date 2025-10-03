@@ -2,31 +2,30 @@ import React from 'react';
 
 // Service item data
 const miniApps = [
-  { id: 'epayment', label: 'ePayment', badge: 'Public', badgeColor: 'blue' },
-  { id: 'moph-refer', label: 'Moph Refer', badge: 'Official', badgeColor: 'green' },
-  { id: 'son-buddy', label: 'สอน.บัดดี้', badge: 'Official', badgeColor: 'green' },
-  { id: 'mor-prom', label: 'หมอพร้อม Station', badge: 'Official', badgeColor: 'green' },
-  { id: 'pink-blue', label: 'สมุดสีชมพู', badge: 'Public', badgeColor: 'blue' },
-  { id: 'yellow-book', label: 'สมุดสีเหลือง', badge: 'Public', badgeColor: 'blue' },
-  { id: 'blue-book', label: 'สมุดสีฟ้า', badge: 'Public', badgeColor: 'blue' },
-
+  { id: 'epayment', label: 'ePayment', badge: 'Public', badgeColor: 'blue', image: '/img/epayment.png' },
+  { id: 'moph-refer', label: 'Moph Refer', badge: 'Official', badgeColor: 'green', image: '/img/mophrefer.jpeg' },
+  { id: 'son-buddy', label: 'สอน.บัดดี้', badge: 'Official', badgeColor: 'green', image: '/img/son.jpeg' },
+  { id: 'mor-prom', label: 'หมอพร้อม Station', badge: 'Official', badgeColor: 'green', image: '/img/morprom.png' },
+  { id: 'pink-blue', label: 'สมุดสีชมพู', badge: 'Public', badgeColor: 'blue', image: '/img/book.png' },
+  { id: 'yellow-book', label: 'สมุดสีเหลือง', badge: 'Public', badgeColor: 'blue', image: '/img/book.png' },
+  { id: 'blue-book', label: 'สมุดสีฟ้า', badge: 'Public', badgeColor: 'blue', image: '/img/book.png' },
 ];
 
 const officialServices = [
-  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600' },
-  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-green-500 to-emerald-600' },
-  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-600' }
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-green-500 to-emerald-600', image: '/img/gpt.png' },
+  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-600', image: '/img/telemed.png' }
 ];
 
 const appLinks = [
-  { id: 'covid-tracker', label: 'สิทธิ 30 บาท (สปสช.)', badge: 'Official', badgeColor: 'green' },
-  { id: 'emergency-ems', label: 'ระบบแจ้งเหตุฉุกเฉิน EMS 1669', badge: 'Official', badgeColor: 'green' },
-  { id: 'thai-health', label: 'Thai Health (สร้างสุข/สสส.)', badge: 'Official', badgeColor: 'green' },
-  { id: 'khunlook', label: 'KhunLook (คุณลูก)', badge: 'Official', badgeColor: 'green' },
-  { id: 'ya-and-you', label: 'ยาและคุณ (Ya&You)', badge: 'Official', badgeColor: 'green' },
-  { id: 'gis-health', label: 'ค้นหาโรงพยาบาล (GIS Health)', badge: 'Official', badgeColor: 'green' },
-  { id: 'phonphai', label: 'PhonPhai (พ้นภัย)', badge: 'Official', badgeColor: 'green' },
-  { id: 'thai-first-aid', label: 'Thai First Aid', badge: 'Official', badgeColor: 'green' }
+  { id: 'covid-tracker', label: 'สิทธิ 30 บาท (สปสช.)', badge: 'Official', badgeColor: 'green', image: '/img/30.webp' },
+  { id: 'emergency-ems', label: 'ระบบแจ้งเหตุฉุกเฉิน EMS 1669', badge: 'Official', badgeColor: 'green', image: '/img/ems.png' },
+  { id: 'thai-health', label: 'Thai Health (สร้างสุข/สสส.)', badge: 'Official', badgeColor: 'green', image: '/img/sss.png' },
+  { id: 'khunlook', label: 'KhunLook (คุณลูก)', badge: 'Official', badgeColor: 'green', image: '/img/khunlook.png' },
+  { id: 'ya-and-you', label: 'ยาและคุณ (Ya&You)', badge: 'Official', badgeColor: 'green', image: '/img/ya.png' },
+  { id: 'gis-health', label: 'ค้นหาโรงพยาบาล (GIS Health)', badge: 'Official', badgeColor: 'green', image: '/img/gis.png' },
+  { id: 'phonphai', label: 'PhonPhai (พ้นภัย)', badge: 'Official', badgeColor: 'green', image: '/img/phonphai.png' },
+  { id: 'thai-first-aid', label: 'Thai First Aid', badge: 'Official', badgeColor: 'green', image: '/img/thaif.png' }
 ];
 
 // Icon components
@@ -62,14 +61,6 @@ const Badge = ({ color, children }) => {
   );
 };
 
-const AppLinkCard = ({ label, gradient }) => (
-  <div className={`flex-shrink-0 w-32 bg-gradient-to-br ${gradient} rounded-xl p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}>
-    <div className="bg-white/30 w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm">
-      <div className="w-6 h-6" />
-    </div>
-    <span className="font-bold text-sm mt-6">{label}</span>
-  </div>
-);
 
 export default function App() {
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
@@ -108,12 +99,16 @@ export default function App() {
             </header>
 
             <main className="space-y-8">
-              {/* Official Services */}
               <section>
                 <h2 className="text-lg font-bold text-white mb-4">บริการของรัฐบาล</h2>
                 <div className="flex space-x-3 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
                   {officialServices.map(link => (
-                    <AppLinkCard key={link.id} label={link.label} gradient={link.gradient} />
+                    <div key={link.id} className={`flex-shrink-0 w-32 h-40 bg-gradient-to-br ${link.gradient} rounded-xl p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}>
+                      <div className="w-full h-20 flex items-center justify-center mb-2">
+                        <img src={process.env.PUBLIC_URL + link.image} alt={link.label} className="w-16 h-16 object-contain" onError={(e) => { e.target.style.display = 'none' }} />
+                      </div>
+                      <span className="font-bold text-sm">{link.label}</span>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -123,8 +118,8 @@ export default function App() {
                 <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
                   {miniApps.map(app => (
                     <div key={app.id} className="flex-shrink-0 w-20 p-1 space-y-2 cursor-pointer rounded-lg hover:bg-white/20 transition backdrop-blur-sm">
-                      <div className="bg-white/30 rounded-lg flex items-center justify-center aspect-square backdrop-blur-sm">
-                        <div className="w-8 h-8" />
+                      <div className="bg-white/30 rounded-full flex items-center justify-center aspect-square backdrop-blur-sm overflow-hidden">
+                        <img src={process.env.PUBLIC_URL + app.image} alt={app.label} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none' }} />
                       </div>
                       <p className="text-xs font-medium text-white leading-tight">{app.label}</p>
                       <Badge color={app.badgeColor}>{app.badge}</Badge>
@@ -143,7 +138,7 @@ export default function App() {
                         <div key={service.id} className="flex-shrink-0 w-20">
                           <ServiceButton>
                             <IconCircle>
-                              <div className="w-7 h-7" />
+                              <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
                             </IconCircle>
                             <span className="text-xs font-medium text-white leading-tight text-center">
                               {service.label}
@@ -168,7 +163,7 @@ export default function App() {
                         <div key={service.id}>
                           <ServiceButton>
                             <IconCircle>
-                              <div className="w-7 h-7" />
+                              <img src={process.env.PUBLIC_URL + service.image} alt={service.label} className="w-full h-full object-cover rounded-full" onError={(e) => { e.target.style.display = 'none' }} />
                             </IconCircle>
                             <span className="text-xs font-medium text-white leading-tight text-center">
                               {service.label}
