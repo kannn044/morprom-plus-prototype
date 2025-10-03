@@ -1,25 +1,197 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
+// Service item data
+const miniApps = [
+  { id: 'epayment', label: 'ePayment', badge: 'Public', badgeColor: 'blue' },
+  { id: 'moph-refer', label: 'Moph Refer', badge: 'Official', badgeColor: 'green' },
+  { id: 'son-buddy', label: 'สอน.บัดดี้', badge: 'Official', badgeColor: 'green' },
+  { id: 'mor-prom', label: 'หมอพร้อม Station', badge: 'Official', badgeColor: 'green' },
+  { id: 'pink-blue', label: 'สมุดสีชมพู', badge: 'Public', badgeColor: 'blue' },
+  { id: 'yellow-book', label: 'สมุดสีเหลือง', badge: 'Public', badgeColor: 'blue' },
+  { id: 'blue-book', label: 'สมุดสีฟ้า', badge: 'Public', badgeColor: 'blue' },
+
+];
+
+const officialServices = [
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-green-500 to-emerald-600' },
+  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-600' }
+];
+
+const appLinks = [
+  { id: 'covid-tracker', label: 'สิทธิ 30 บาท (สปสช.)', badge: 'Official', badgeColor: 'green' },
+  { id: 'emergency-ems', label: 'ระบบแจ้งเหตุฉุกเฉิน EMS 1669', badge: 'Official', badgeColor: 'green' },
+  { id: 'thai-health', label: 'Thai Health (สร้างสุข/สสส.)', badge: 'Official', badgeColor: 'green' },
+  { id: 'khunlook', label: 'KhunLook (คุณลูก)', badge: 'Official', badgeColor: 'green' },
+  { id: 'ya-and-you', label: 'ยาและคุณ (Ya&You)', badge: 'Official', badgeColor: 'green' },
+  { id: 'gis-health', label: 'ค้นหาโรงพยาบาล (GIS Health)', badge: 'Official', badgeColor: 'green' },
+  { id: 'phonphai', label: 'PhonPhai (พ้นภัย)', badge: 'Official', badgeColor: 'green' },
+  { id: 'thai-first-aid', label: 'Thai First Aid', badge: 'Official', badgeColor: 'green' }
+];
+
+// Icon components
+const SearchIcon = () => (
+  <svg className="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+);
+
+// Reusable components
+const ServiceButton = ({ children, className = "" }) => (
+  <div className={`flex flex-col items-center space-y-2 cursor-pointer rounded-lg hover:bg-white/20 p-2 transition ${className}`}>
+    {children}
+  </div>
+);
+
+const IconCircle = ({ children, className = "bg-white/30" }) => (
+  <div className={`${className} rounded-full w-14 h-14 flex items-center justify-center backdrop-blur-sm`}>
+    {children}
+  </div>
+);
+
+const Badge = ({ color, children }) => {
+  const colors = {
+    blue: 'bg-blue-100 text-blue-800',
+    green: 'bg-emerald-100 text-emerald-800'
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <span className={`inline-block ${colors[color]} text-[10px] font-semibold px-2 py-0.5 rounded-full`}>
+      {children}
+    </span>
+  );
+};
+
+const AppLinkCard = ({ label, gradient }) => (
+  <div className={`flex-shrink-0 w-32 bg-gradient-to-br ${gradient} rounded-xl p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}>
+    <div className="bg-white/30 w-10 h-10 rounded-lg flex items-center justify-center backdrop-blur-sm">
+      <div className="w-6 h-6" />
     </div>
+    <span className="font-bold text-sm mt-6">{label}</span>
+  </div>
+);
+
+export default function App() {
+  const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
+
+  return (
+    <>
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+      <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
+        <div className="max-w-sm mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10">
+          <div className="p-6 space-y-8">
+            {/* Header */}
+            <header className="flex items-center justify-between space-x-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <SearchIcon />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="ค้นหาบริการที่คุณต้องการ"
+                    className="w-full bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-2 pl-10 pr-4 text-sm text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 flex-shrink-0">
+                <span className="text-sm font-medium text-white">เข้าสู่ระบบ</span>
+              </div>
+            </header>
+
+            <main className="space-y-8">
+              {/* Official Services */}
+              <section>
+                <h2 className="text-lg font-bold text-white mb-4">บริการของรัฐบาล</h2>
+                <div className="flex space-x-3 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
+                  {officialServices.map(link => (
+                    <AppLinkCard key={link.id} label={link.label} gradient={link.gradient} />
+                  ))}
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-lg font-bold text-white mb-4">Mini Apps</h2>
+                <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
+                  {miniApps.map(app => (
+                    <div key={app.id} className="flex-shrink-0 w-20 p-1 space-y-2 cursor-pointer rounded-lg hover:bg-white/20 transition backdrop-blur-sm">
+                      <div className="bg-white/30 rounded-lg flex items-center justify-center aspect-square backdrop-blur-sm">
+                        <div className="w-8 h-8" />
+                      </div>
+                      <p className="text-xs font-medium text-white leading-tight">{app.label}</p>
+                      <Badge color={app.badgeColor}>{app.badge}</Badge>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* App Links */}
+              <section>
+                <h2 className="text-lg font-bold text-white mb-4">แอปพลิเคชันภายนอก</h2>
+                {!showAllAppLinks ? (
+                  <>
+                    <div className="flex space-x-4 overflow-x-auto pb-2 -mx-6 px-6 hide-scrollbar">
+                      {appLinks.slice(0, 6).map(service => (
+                        <div key={service.id} className="flex-shrink-0 w-20">
+                          <ServiceButton>
+                            <IconCircle>
+                              <div className="w-7 h-7" />
+                            </IconCircle>
+                            <span className="text-xs font-medium text-white leading-tight text-center">
+                              {service.label}
+                            </span>
+                          </ServiceButton>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <button
+                        onClick={() => setShowAllAppLinks(true)}
+                        className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                      >
+                        ดูเพิ่มเติม
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-4 gap-4">
+                      {appLinks.map(service => (
+                        <div key={service.id}>
+                          <ServiceButton>
+                            <IconCircle>
+                              <div className="w-7 h-7" />
+                            </IconCircle>
+                            <span className="text-xs font-medium text-white leading-tight text-center">
+                              {service.label}
+                            </span>
+                          </ServiceButton>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <button
+                        onClick={() => setShowAllAppLinks(false)}
+                        className="bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 px-6 text-xs text-white font-medium hover:bg-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
+                      >
+                        ย่อลง
+                      </button>
+                    </div>
+                  </>
+                )}
+              </section>
+            </main>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
-
-export default App;
