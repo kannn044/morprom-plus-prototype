@@ -1001,11 +1001,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AppContent />} />
-        <Route path="/docmeet" element={<DocMeet />} />
-        <Route path="/hospital/:hospcode" element={<DocMeetDetail />} />
-        <Route path="/chatai" element={<ChatAI />} />
-        <Route path="/telemed" element={<Telemed />} />
+        <Route path="/app/" element={<AppContent />} />
+        <Route path="/app/docmeet" element={<DocMeet />} />
+        <Route path="/app/hospital/:hospcode" element={<DocMeetDetail />} />
+        <Route path="/app/chatai" element={<ChatAI />} />
+        <Route path="/app/telemed" element={<Telemed />} />
       </Routes>
     </BrowserRouter>
   );
