@@ -70,21 +70,21 @@ const officialServices = [
     id: "mental-health",
     label: "ตอบปัญหาสุขภาพด้วย Ai",
     gradient: "from-emerald-400 via-teal-300 to-white",
-    image: "/img/gpt.png",
+    image: "/img/ai.png",
     route: "/app/chatai",
   },
   {
     id: "health-tips",
     label: "ปรึกษาแพทย์ทางไกล",
     gradient: "from-emerald-400 via-teal-300 to-white",
-    image: "/img/telemed.png",
+    image: "/img/telemed-2.png",
     route: "/app/telemed",
   },
   {
     id: "health-emergency",
     label: "เจ็บป่วยฉุกเฉิน",
     gradient: "from-emerald-400 via-teal-300 to-white",
-    image: "/img/telemed.png",
+    image: "/img/emergency.png",
     route: "/app/telemed",
   },
 ];
@@ -422,9 +422,9 @@ function AppContent() {
                           className="cursor-pointer transition-transform hover:scale-105"
                         >
                           <div
-                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-3 md:p-4 flex items-center justify-center shadow-lg aspect-square mb-2`}
+                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-0 sm:p-0 md:p-0 flex items-center justify-center shadow-lg aspect-square mb-2`}
                           >
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center">
+                            <div className="w-100 h-100 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center">
                               <img
                                 src={process.env.PUBLIC_URL + link.image}
                                 alt={link.label}
