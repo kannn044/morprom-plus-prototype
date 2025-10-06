@@ -148,7 +148,9 @@ const UserMenu = ({ onLogout, onClose }) => (
 function AppContent() {
   const navigate = useNavigate();
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
+  });
   const [showLoginModal, setShowLoginModal] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
@@ -167,6 +169,15 @@ function AppContent() {
 
   const handleLogin = (method) => {
     console.log('Logging in with:', method);
+    const userData = {
+      method: method,
+      username: 'สมหมาย ทองสุก',
+      loginTime: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('userData', JSON.stringify(userData));
+    
     setShowLoginModal(false);
     setShowSuccessModal(true);
     setTimeout(() => {
@@ -178,8 +189,8 @@ function AppContent() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setShowUserMenu(false);
-    sessionStorage.clear();
-    localStorage.clear();
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userData');
   };
 
   const handleUserClick = () => {
