@@ -1,4 +1,9 @@
-import React from "react";
+import React from 'react';
+import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
+import DocMeet from './docmeet';
+import ChatAI from './chatai';
+import Telemed from './telemed';
+import DocMeetDetail from './docmeet_detail';
 
 // Service item data
 const miniApps = [
@@ -54,24 +59,9 @@ const miniApps = [
 ];
 
 const officialServices = [
-  {
-    id: "ai-chatbot",
-    label: "นัดพบแพทย์",
-    gradient: "from-emerald-500 to-teal-600",
-    image: "/img/appointment.png",
-  },
-  {
-    id: "mental-health",
-    label: "ตอบปัญหาสุขภาพด้วย Ai",
-    gradient: "from-teal-500 to-emerald-600",
-    image: "/img/gpt.png",
-  },
-  {
-    id: "health-tips",
-    label: "ปรึกษาแพทย์ทางไกล (Telemedicine)",
-    gradient: "from-teal-500 to-cyan-900",
-    image: "/img/telemed.png",
-  },
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png', route: '/docmeet' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png', route: '/chatai' },
+  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-900', image: '/img/telemed.png', route: '/telemed' }
 ];
 
 const appLinks = [
@@ -251,9 +241,12 @@ const UserMenu = ({ onLogout, onClose }) => (
   </div>
 );
 
-export default function App() {
+function AppContent() {
+  const navigate = useNavigate();
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+    return sessionStorage.getItem('isLoggedIn') === 'true';
+  });
   const [showLoginModal, setShowLoginModal] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
@@ -263,12 +256,25 @@ export default function App() {
     if (!isLoggedIn) {
       setShowLoginModal(true);
     } else {
-      console.log("Accessing service:", service.label);
+      if (service.route) {
+        navigate(service.route);
+      } else {
+        console.log('Accessing service:', service.label);
+      }
     }
   };
 
   const handleLogin = (method) => {
-    console.log("Logging in with:", method);
+    console.log('Logging in with:', method);
+    const userData = {
+      method: method,
+      username: 'สมหมาย ทองสุก',
+      loginTime: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('userData', JSON.stringify(userData));
+    
     setShowLoginModal(false);
     setShowSuccessModal(true);
     setTimeout(() => {
@@ -280,6 +286,8 @@ export default function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setShowUserMenu(false);
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userData');
   };
 
   const handleUserClick = () => {
@@ -986,5 +994,19 @@ export default function App() {
         />
       )}
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppContent />} />
+        <Route path="/docmeet" element={<DocMeet />} />
+        <Route path="/hospital/:hospcode" element={<DocMeetDetail />} />
+        <Route path="/chatai" element={<ChatAI />} />
+        <Route path="/telemed" element={<Telemed />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
