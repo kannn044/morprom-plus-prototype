@@ -38,10 +38,11 @@ function ChatAI() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://10.1.0.101:8080/api/chat', {
+            const response = await fetch('http://localhost:8080/api/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjA1ODRkZjViLTU2ZTEtNGQ3Mi04MDI3LWIxMTI2OWUxMjAyNiJ9.RGMkuJ27dWETu9ktN4poThutDiQRerj3fsvmD_jIL6M'
                 },
                 body: JSON.stringify({
                     model: 'gpt-oss:20b',
