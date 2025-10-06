@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import DocMeet from './docmeet';
+import ChatAI from './chatai';
 
 // Service item data
 const miniApps = [
@@ -15,7 +16,7 @@ const miniApps = [
 
 const officialServices = [
   { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png', route: '/docmeet' },
-  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png', route: '/chatai' },
   { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-900', image: '/img/telemed.png' }
 ];
 
@@ -353,6 +354,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AppContent />} />
         <Route path="/docmeet" element={<DocMeet />} />
+        <Route path="/chatai" element={<ChatAI />} />
       </Routes>
     </BrowserRouter>
   );
