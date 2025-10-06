@@ -59,9 +59,34 @@ const miniApps = [
 ];
 
 const officialServices = [
-  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/appointment.png', route: '/app/docmeet' },
-  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/gpt.png', route: '/app/chatai' },
-  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/telemed.png', route: '/app/telemed' }
+  {
+    id: "ai-chatbot",
+    label: "นัดพบแพทย์",
+    gradient: "from-emerald-400 via-teal-300 to-white",
+    image: "/img/appointment.png",
+    route: "/app/docmeet",
+  },
+  {
+    id: "mental-health",
+    label: "ตอบปัญหาสุขภาพด้วย Ai",
+    gradient: "from-emerald-400 via-teal-300 to-white",
+    image: "/img/gpt.png",
+    route: "/app/chatai",
+  },
+  {
+    id: "health-tips",
+    label: "ปรึกษาแพทย์ทางไกล",
+    gradient: "from-emerald-400 via-teal-300 to-white",
+    image: "/img/telemed.png",
+    route: "/app/telemed",
+  },
+  {
+    id: "health-emergency",
+    label: "เจ็บป่วยฉุกเฉิน",
+    gradient: "from-emerald-400 via-teal-300 to-white",
+    image: "/img/telemed.png",
+    route: "/app/telemed",
+  },
 ];
 
 const appLinks = [
@@ -388,34 +413,34 @@ function AppContent() {
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 3 cards */}
                 <section className="-mx-3 sm:-mx-4 md:-mx-6">
-                  <div className="flex px-3 sm:px-4 md:px-6">
-                    {officialServices.map((link, index) => (
-                      <div
-                        key={link.id}
-                        onClick={() => handleOfficialServiceClick(link)}
-                        className={`flex-1 cursor-pointer transition-transform hover:scale-105 ${
-                          index === 0 ? "" : "ml-2 sm:ml-3"
-                        }`}
-                      >
+                  <div className="px-3 sm:px-4 md:px-6">
+                    <div className="grid grid-cols-4 gap-2 sm:gap-3">
+                      {officialServices.map((link) => (
                         <div
-                          className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-3 sm:p-4 flex items-center justify-center shadow-lg aspect-square mb-2`}
+                          key={link.id}
+                          onClick={() => handleOfficialServiceClick(link)}
+                          className="cursor-pointer transition-transform hover:scale-105"
                         >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
-                            <img
-                              src={process.env.PUBLIC_URL + link.image}
-                              alt={link.label}
-                              className="w-full h-full object-contain"
-                              onError={(e) => {
-                                e.target.style.display = "none";
-                              }}
-                            />
+                          <div
+                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-3 md:p-4 flex items-center justify-center shadow-lg aspect-square mb-2`}
+                          >
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center">
+                              <img
+                                src={process.env.PUBLIC_URL + link.image}
+                                alt={link.label}
+                                className="w-full h-full object-contain"
+                                onError={(e) => {
+                                  e.target.style.display = "none";
+                                }}
+                              />
+                            </div>
                           </div>
+                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1">
+                            {link.label}
+                          </span>
                         </div>
-                        <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1">
-                          {link.label}
-                        </span>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </section>
 
