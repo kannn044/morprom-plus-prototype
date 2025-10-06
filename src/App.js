@@ -59,9 +59,9 @@ const miniApps = [
 ];
 
 const officialServices = [
-  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png', route: '/app/docmeet' },
-  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png', route: '/app/chatai' },
-  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-900', image: '/img/telemed.png', route: '/app/telemed' }
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/appointment.png', route: '/app/docmeet' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/gpt.png', route: '/app/chatai' },
+  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/telemed.png', route: '/app/telemed' }
 ];
 
 const appLinks = [
