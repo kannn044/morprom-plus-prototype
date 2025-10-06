@@ -1,9 +1,9 @@
-import React from 'react';
-import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
-import DocMeet from './docmeet';
-import ChatAI from './chatai';
-import Telemed from './telemed';
-import DocMeetDetail from './docmeet_detail';
+import React from "react";
+import { useNavigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import DocMeet from "./docmeet";
+import ChatAI from "./chatai";
+import Telemed from "./telemed";
+import DocMeetDetail from "./docmeet_detail";
 
 // Service item data
 const miniApps = [
@@ -59,9 +59,9 @@ const miniApps = [
 ];
 
 const officialServices = [
-  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png', route: '/app/docmeet' },
-  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png', route: '/app/chatai' },
-  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-900', image: '/img/telemed.png', route: '/app/telemed' }
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/appointment.png', route: '/app/docmeet' },
+  { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/gpt.png', route: '/app/chatai' },
+  { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล', gradient: 'from-emerald-400 via-teal-300 to-white', image: '/img/telemed.png', route: '/app/telemed' }
 ];
 
 const appLinks = [
@@ -245,7 +245,7 @@ function AppContent() {
   const navigate = useNavigate();
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
-    return sessionStorage.getItem('isLoggedIn') === 'true';
+    return sessionStorage.getItem("isLoggedIn") === "true";
   });
   const [showLoginModal, setShowLoginModal] = React.useState(false);
   const [showUserMenu, setShowUserMenu] = React.useState(false);
@@ -259,22 +259,22 @@ function AppContent() {
       if (service.route) {
         navigate(service.route);
       } else {
-        console.log('Accessing service:', service.label);
+        console.log("Accessing service:", service.label);
       }
     }
   };
 
   const handleLogin = (method) => {
-    console.log('Logging in with:', method);
+    console.log("Logging in with:", method);
     const userData = {
       method: method,
-      username: 'สมหมาย ทองสุก',
-      loginTime: new Date().toISOString()
+      username: "สมหมาย ทองสุก",
+      loginTime: new Date().toISOString(),
     };
-    
-    sessionStorage.setItem('isLoggedIn', 'true');
-    sessionStorage.setItem('userData', JSON.stringify(userData));
-    
+
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("userData", JSON.stringify(userData));
+
     setShowLoginModal(false);
     setShowSuccessModal(true);
     setTimeout(() => {
@@ -286,8 +286,8 @@ function AppContent() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setShowUserMenu(false);
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('userData');
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("userData");
   };
 
   const handleUserClick = () => {
@@ -312,8 +312,9 @@ function AppContent() {
       <div className="min-h-screen bg-white">
         <div className="max-w-md mx-auto min-h-screen shadow-2xl">
           {/* Top gradient section */}
-          <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 pb-8">
-            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
+          <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative">
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
+            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
               {/* Header */}
               <header className="flex items-center justify-between">
                 {/* Left side - Profile */}
@@ -793,24 +794,23 @@ function AppContent() {
               </div>
             </section>
           )}
-          
         </div>
       </div>
 
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-4 pointer-events-none z-40">
-        <div className="max-w-md w-full flex items-stretch justify-between gap-3 pointer-events-auto mx-6">
+        <div className="max-w-md w-full flex items-stretch justify-between gap-3 pointer-events-auto mx-8 px-4">
           <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-6 py-3 flex items-center justify-around shadow-2xl flex-1">
             <button
               onClick={() => setActiveTab("home")}
-              className="relative flex flex-col items-center transition-all"
+              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
                 className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
                   activeTab === "home" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col items-center">
                 <svg
                   className={`w-6 h-6 ${
                     activeTab === "home" ? "text-emerald-600" : "text-gray-600"
@@ -827,7 +827,7 @@ function AppContent() {
                   ></path>
                 </svg>
                 <span
-                  className={`text-[10px] mt-1 block ${
+                  className={`text-xs mt-1 block ${
                     activeTab === "home"
                       ? "text-emerald-600 font-medium"
                       : "text-gray-600"
@@ -840,14 +840,14 @@ function AppContent() {
 
             <button
               onClick={() => setActiveTab("service")}
-              className="relative flex flex-col items-center transition-all"
+              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
                 className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
                   activeTab === "service" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col items-center">
                 <svg
                   className={`w-6 h-6 ${
                     activeTab === "service"
@@ -866,7 +866,7 @@ function AppContent() {
                   ></path>
                 </svg>
                 <span
-                  className={`text-[10px] mt-1 block ${
+                  className={`text-xs mt-1 block ${
                     activeTab === "service"
                       ? "text-emerald-600 font-medium"
                       : "text-gray-600"
@@ -879,14 +879,14 @@ function AppContent() {
 
             <button
               onClick={() => setActiveTab("qr")}
-              className="relative flex flex-col items-center transition-all"
+              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
                 className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
                   activeTab === "qr" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col items-center">
                 <svg
                   className={`w-6 h-6 ${
                     activeTab === "qr" ? "text-emerald-600" : "text-gray-600"
@@ -903,7 +903,7 @@ function AppContent() {
                   ></path>
                 </svg>
                 <span
-                  className={`text-[10px] mt-1 block ${
+                  className={`text-xs mt-1 block ${
                     activeTab === "qr"
                       ? "text-emerald-600 font-medium"
                       : "text-gray-600"
@@ -916,14 +916,14 @@ function AppContent() {
 
             <button
               onClick={() => setActiveTab("news")}
-              className="relative flex flex-col items-center transition-all"
+              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
                 className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
                   activeTab === "news" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col items-center">
                 <svg
                   className={`w-6 h-6 ${
                     activeTab === "news" ? "text-emerald-600" : "text-gray-600"
@@ -940,7 +940,7 @@ function AppContent() {
                   ></path>
                 </svg>
                 <span
-                  className={`text-[10px] mt-1 block ${
+                  className={`text-xs mt-1 block ${
                     activeTab === "news"
                       ? "text-emerald-600 font-medium"
                       : "text-gray-600"
