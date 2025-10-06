@@ -1,4 +1,3 @@
-// docmeet_detail.jsx
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { hospitalData } from "./docmeet";
@@ -63,44 +62,47 @@ export default function DocMeetDetail() {
     hospitalData.find((h) => h.hospcode === hospcode) ||
     { hospital_name: "ไม่พบข้อมูล", hospcode: "-" };
 
-  // ตัวอย่างข้อมูลนัด
   const schedules = [
     { id: 1, date: "วันพุธ ที่ 18 ต.ค. 2568", clinic: "คลินิกอายุรกรรม" },
     { id: 2, date: "วันพฤหัสบดี ที่ 20 ต.ค. 2568", clinic: "คลินิกกระดูกและข้อ" },
     { id: 3, date: "วันอังคาร ที่ 22 ต.ค. 2568", clinic: "คลินิกศัลยกรรม" },
   ];
 
-  // เก็บรายการที่จองแล้ว
   const [booked, setBooked] = useState(new Set());
-  // สำหรับยืนยันก่อนจอง
   const [confirmItem, setConfirmItem] = useState(null);
-  // สำหรับแจ้งผลสำเร็จ
   const [successInfo, setSuccessInfo] = useState(null);
+  
+  // -- ฟังก์ชันจัดการการคลิกพร้อมหน่วงเวลา --
+  const DELAY = 300; // ตั้งค่าเวลาหน่วง (ms) ไว้ที่เดียวเพื่อแก้ไขง่าย
 
-  const openConfirm = (item) => setConfirmItem(item);
-  const closeConfirm = () => setConfirmItem(null);
+  const handleNavigateBack = () => setTimeout(() => navigate(-1), DELAY);
 
-  const confirmBooking = () => {
-    if (!confirmItem) return;
-    const next = new Set(booked);
-    next.add(confirmItem.id);
-    setBooked(next);
-    setSuccessInfo({
-      hospital_name: hospital.hospital_name,
-      date: confirmItem.date,
-      clinic: confirmItem.clinic,
-    });
-    setConfirmItem(null);
+  const handleOpenConfirm = (item) => setTimeout(() => setConfirmItem(item), DELAY);
+
+  const handleCloseConfirm = () => setTimeout(() => setConfirmItem(null), DELAY);
+  
+  const handleCloseSuccess = () => setTimeout(() => setSuccessInfo(null), DELAY);
+
+  const handleConfirmBooking = () => {
+    setTimeout(() => {
+      if (!confirmItem) return;
+      const next = new Set(booked);
+      next.add(confirmItem.id);
+      setBooked(next);
+      setSuccessInfo({
+        hospital_name: hospital.hospital_name,
+        date: confirmItem.date,
+        clinic: confirmItem.clinic,
+      });
+      setConfirmItem(null); // ปิด modal ยืนยัน
+    }, DELAY);
   };
-
-  const closeSuccess = () => setSuccessInfo(null);
-
+  
   return (
     <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
       <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10 text-white">
-        {/* Header: ลูกศรย้อนกลับ + หัวข้อกลาง */}
         <div className="relative flex items-center p-4 border-b border-white/30">
-          <button onClick={() => navigate(-1)} className="absolute left-4 text-white" aria-label="ย้อนกลับ">
+          <button onClick={handleNavigateBack} className="absolute left-4 text-white" aria-label="ย้อนกลับ">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
               fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -111,10 +113,7 @@ export default function DocMeetDetail() {
         </div>
 
         <div className="p-4">
-          {/* ชื่อโรงพยาบาล */}
           <p className="text-lg font-semibold text-white/90 mt-2">{hospital.hospital_name}</p>
-
-          {/* ตารางนัด */}
           <h2 className="mt-6 mb-2 font-semibold">ตารางนัดที่ว่าง</h2>
 
           <div className="bg-white/20 border border-white/30 rounded-lg overflow-hidden">
@@ -129,9 +128,8 @@ export default function DocMeetDetail() {
                     <p className="text-white">{item.date}</p>
                     <p className="text-white/80 text-sm">{item.clinic}</p>
                   </div>
-
                   <button
-                    onClick={() => openConfirm(item)}
+                    onClick={() => handleOpenConfirm(item)}
                     disabled={isBooked}
                     className={[
                       "px-4 py-1 rounded-full font-medium transition",
@@ -149,20 +147,18 @@ export default function DocMeetDetail() {
         </div>
       </div>
 
-      {/* Modal ยืนยัน (UI ยึดตาม LoginModal) */}
       {confirmItem && (
         <ConfirmModal
           item={confirmItem}
-          onConfirm={confirmBooking}
-          onCancel={closeConfirm}
+          onConfirm={handleConfirmBooking}
+          onCancel={handleCloseConfirm}
         />
       )}
 
-      {/* Modal สำเร็จ (UI ยึดตาม LoginModal) */}
       {successInfo && (
         <SuccessModal
           info={successInfo}
-          onClose={closeSuccess}
+          onClose={handleCloseSuccess}
         />
       )}
     </div>

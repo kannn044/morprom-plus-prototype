@@ -36,13 +36,23 @@ export default function DocMeet() {
     );
   }, [searchTerm]);
 
+  // 1. สร้างฟังก์ชันใหม่สำหรับจัดการการคลิกและหน่วงเวลา
+  const handleHospitalClick = (hospital) => {
+    // หน่วงเวลา 500 มิลลิวินาที (0.5 วินาที) ก่อนเปลี่ยนหน้า
+    setTimeout(() => {
+      // 3. แก้ไข Path ให้เป็น String ที่ถูกต้อง
+      navigate(`/app/hospital/${hospital.hospcode}`, {
+        state: { hospital },
+      });
+    }, 500); // <-- สามารถปรับระยะเวลาได้ตามต้องการ (หน่วยเป็น ms)
+  };
+
   return (
     <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
       <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10">
         <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 md:space-y-8">
           <header className="flex items-center justify-between space-x-2 sm:space-x-4">
-            {/* ลูกศรย้อนกลับไปหน้า App */}
-            <button onClick={() => navigate("/")} className="text-white">
+            <button onClick={() => navigate("/app/")} className="text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -58,12 +68,9 @@ export default function DocMeet() {
                 />
               </svg>
             </button>
-
             <h1 className="text-lg sm:text-xl font-bold text-white">
               ค้นหาโรงพยาบาล
             </h1>
-
-            {/* กล่องว่างเพื่อบาลานซ์ layout */}
             <div className="w-6" />
           </header>
 
@@ -95,12 +102,8 @@ export default function DocMeet() {
                   <div
                     key={hospital.hospcode}
                     className="bg-white/20 p-4 rounded-lg border border-white/30 hover:bg-white/25 transition cursor-pointer"
-                    onClick={() =>
-                      // ใช้ path ตรงกับที่ประกาศใน App.jsx
-                      navigate(`/hospital/${hospital.hospcode}`, {
-                        state: { hospital },
-                      })
-                    }
+                    // 2. เรียกใช้ฟังก์ชันใหม่ที่สร้างขึ้นเมื่อมีการคลิก
+                    onClick={() => handleHospitalClick(hospital)}
                   >
                     <p className="text-white font-bold">
                       {hospital.hospital_name}
