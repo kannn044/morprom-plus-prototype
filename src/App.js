@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import DocMeet from './docmeet';
 import ChatAI from './chatai';
+import DocMeetDetail from './docmeet_detail';
 
 // Service item data
 const miniApps = [
@@ -365,6 +366,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AppContent />} />
         <Route path="/docmeet" element={<DocMeet />} />
+        <Route path="/hospital/:hospcode" element={<DocMeetDetail />} />
         <Route path="/chatai" element={<ChatAI />} />
       </Routes>
     </BrowserRouter>
