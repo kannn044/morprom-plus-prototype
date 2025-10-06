@@ -10,6 +10,11 @@ function ChatAI() {
     const handleSend = async () => {
         if (input.trim() === '' || isLoading) return;
 
+        const systemPrompt = {
+            role: "system",
+            content: "คุณเป็นผู้เชี่ยวชาญด้านการแพทย์ สามารถวิเคราะห์อาการเจ็บป่วยได้อย่างแม่นยำ หากได้ข้อมูลไม่ครบไม่สามารถวินิจฉัยได้ให้ถามกลับเพิ่อขอรายละเอียดเพิ่มเติม กรุณาตอบให้สั้นๆไม่เกิน 500 ตัวอักษรให้ได้ใจความเป็นภาษาไทยเท่านั้น"
+        };
+
         const newMessages = [...messages, { role: 'user', content: input }];
         setMessages(newMessages);
         setInput('');
@@ -23,11 +28,14 @@ function ChatAI() {
                 },
                 body: JSON.stringify({
                     model: 'gpt-oss:20b',
-                    messages: [{ role: 'user', content: input }],
+                    messages: [systemPrompt, ...newMessages],
                     stream: false,
+                    options: {
+                        num_predict: 500
+                    }
                 }),
             });
-            
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -46,7 +54,7 @@ function ChatAI() {
     return (
         <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
             <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col">
-                <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0">
+                <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
                     <button onClick={() => navigate(-1)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
