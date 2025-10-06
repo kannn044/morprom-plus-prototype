@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
+import DocMeet from './docmeet';
 
 // Service item data
 const miniApps = [
@@ -12,7 +14,7 @@ const miniApps = [
 ];
 
 const officialServices = [
-  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png' },
+  { id: 'ai-chatbot', label: 'นัดพบแพทย์', gradient: 'from-emerald-500 to-teal-600', image: '/img/appointment.png', route: '/docmeet' },
   { id: 'mental-health', label: 'ตอบปัญหาสุขภาพด้วย Ai', gradient: 'from-teal-500 to-emerald-600', image: '/img/gpt.png' },
   { id: 'health-tips', label: 'ปรึกษาแพทย์ทางไกล (Telemedicine)', gradient: 'from-teal-500 to-cyan-900', image: '/img/telemed.png' }
 ];
@@ -142,7 +144,8 @@ const UserMenu = ({ onLogout, onClose }) => (
   </div>
 );
 
-export default function App() {
+function AppContent() {
+  const navigate = useNavigate();
   const [showAllAppLinks, setShowAllAppLinks] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [showLoginModal, setShowLoginModal] = React.useState(false);
@@ -153,7 +156,11 @@ export default function App() {
     if (!isLoggedIn) {
       setShowLoginModal(true);
     } else {
-      console.log('Accessing service:', service.label);
+      if (service.route) {
+        navigate(service.route);
+      } else {
+        console.log('Accessing service:', service.label);
+      }
     }
   };
 
@@ -231,14 +238,13 @@ export default function App() {
                       className={`flex-shrink-0 w-28 h-36 sm:w-32 sm:h-40 bg-gradient-to-br ${link.gradient} rounded-xl p-2 sm:p-3 text-white flex flex-col justify-between cursor-pointer transition-transform hover:scale-105 shadow-lg`}
                     >
                       <div className="w-full h-16 sm:h-20 flex items-center justify-center mb-1 sm:mb-2">
-                        <img src={process.env.PUBLIC_URL + link.image} alt={link.label} className="w-12 h-12 sm:w-16 sm:h-16 object-contain" onError={(e) => { e.target.style.display = 'none' }} />
+                        <img src={process.env.PUBLIC_URL + link.image} alt={link.label} className="w-12 h-12 sm:w-16 sm:h-16 object-contain" onError={(e) => { e.target.style.display = 'none'; }} />
                       </div>
                       <span className="font-bold text-xs sm:text-sm leading-tight">{link.label}</span>
                     </div>
                   ))}
                 </div>
               </section>
-
               <section>
                 <h2 className="text-base sm:text-lg font-bold text-white mb-3 sm:mb-4">Mini Apps</h2>
                 <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-2 -mx-3 px-3 sm:-mx-6 sm:px-6 hide-scrollbar">
@@ -338,5 +344,16 @@ export default function App() {
         />
       )}
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppContent />} />
+        <Route path="/docmeet" element={<DocMeet />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
