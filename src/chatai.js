@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function ChatAI() {
@@ -6,6 +6,23 @@ function ChatAI() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        // Handle viewport height for mobile keyboards
+        const setVH = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        };
+
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', setVH);
+
+        return () => {
+            window.removeEventListener('resize', setVH);
+            window.removeEventListener('orientationchange', setVH);
+        };
+    }, []);
 
     const handleSend = async () => {
         if (input.trim() === '' || isLoading) return;
@@ -52,8 +69,8 @@ function ChatAI() {
     };
 
     return (
-        <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
-            <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col">
+        <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+            <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
                 <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
                     <button onClick={() => navigate(-1)}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,7 +128,7 @@ function ChatAI() {
                             placeholder="Type your message..."
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                             disabled={isLoading}
                             className="w-full bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 sm:py-2 px-4 text-xs sm:text-sm text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition disabled:opacity-50"
                         />
