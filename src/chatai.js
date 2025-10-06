@@ -38,7 +38,7 @@ function ChatAI() {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://ai.moph.go.th:8080/api/chat/completions', {
+            const response = await fetch('http://localhost:8080/api/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
