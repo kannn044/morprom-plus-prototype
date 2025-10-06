@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Telemed() {
@@ -19,9 +19,10 @@ function Telemed() {
 
         getCamera();
 
+        const video = videoRef.current;
         return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
             }
         };
     }, []);
@@ -32,7 +33,7 @@ function Telemed() {
                 <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
 
                 <div className="absolute top-4 right-4 w-32 h-48 bg-gray-800 border-2 border-gray-700 rounded-lg overflow-hidden">
-                    <img src="/img/son.jpeg" alt="Doctor" className="w-full h-full object-cover" />
+                    <img src={`${process.env.PUBLIC_URL}/img/mor.png`} alt="Doctor" className="w-full h-full object-cover" />
                     <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 p-1">
                         <p className="text-xs">Doctor</p>
                     </div>

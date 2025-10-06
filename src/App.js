@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, BrowserRouter, Routes, Route } from 'react-router-dom';
 import DocMeet from './docmeet';
 import ChatAI from './chatai';
+import Telemed from './telemed';
 import DocMeetDetail from './docmeet_detail';
 
 // Service item data
@@ -368,6 +369,7 @@ export default function App() {
         <Route path="/docmeet" element={<DocMeet />} />
         <Route path="/hospital/:hospcode" element={<DocMeetDetail />} />
         <Route path="/chatai" element={<ChatAI />} />
+        <Route path="/telemed" element={<Telemed />} />
       </Routes>
     </BrowserRouter>
   );
