@@ -62,28 +62,28 @@ const officialServices = [
   {
     id: "ai-chatbot",
     label: "นัดพบแพทย์",
-    gradient: "from-emerald-400 via-teal-300 to-white",
+    gradient: "from-emerald-400  to-lime-100",
     image: "/img/icon-calendar.png",
     route: "/app/docmeet",
   },
   {
     id: "mental-health",
     label: "ตอบปัญหาสุขภาพด้วย Ai",
-    gradient: "from-emerald-400 via-teal-300 to-white",
+    gradient: "from-emerald-400  to-lime-100",
     image: "/img/ai-icon.png",
     route: "/app/chatai",
   },
   {
     id: "health-tips",
     label: "ปรึกษาแพทย์ทางไกล",
-    gradient: "from-emerald-400 via-teal-300 to-white",
+    gradient: "from-emerald-400  to-lime-100",
     image: "/img/incon-telemed.png",
     route: "/app/telemed",
   },
   {
     id: "health-emergency",
     label: "เจ็บป่วยฉุกเฉิน",
-    gradient: "from-emerald-400 via-teal-300 to-white",
+    gradient: "from-emerald-400  to-lime-100",
     image: "/img/emergency.png",
     route: "/app/telemed",
   },
@@ -276,6 +276,7 @@ function AppContent() {
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("home");
+  const [showAllServices, setShowAllServices] = React.useState(false);
 
   const handleOfficialServiceClick = (service) => {
     if (!isLoggedIn) {
@@ -411,10 +412,10 @@ function AppContent() {
               </header>
 
               <main className="space-y-4 sm:space-y-5">
-                {/* Official Services - 3 cards */}
+                {/* Official Services - 4 cards */}
                 <section className="-mx-3 sm:-mx-4 md:-mx-6">
                   <div className="px-3 sm:px-4 md:px-6">
-                    <div className="grid grid-cols-4 gap-2 sm:gap-3">
+                    <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
                         <div
                           key={link.id}
@@ -422,9 +423,9 @@ function AppContent() {
                           className="cursor-pointer transition-transform hover:scale-105"
                         >
                           <div
-                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-0 sm:p-0 md:p-0 flex items-center justify-center shadow-lg aspect-square mb-2`}
+                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2`}
                           >
-                            <div className="w-100 h-100 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center">
+                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
                               <img
                                 src={process.env.PUBLIC_URL + link.image}
                                 alt={link.label}
@@ -458,10 +459,15 @@ function AppContent() {
                   <h2 className="text-base sm:text-lg font-bold text-gray-800">
                     บริการแนะนำ
                   </h2>
-                  <button className="text-emerald-600 text-sm font-medium flex items-center">
-                    ดูทั้งหมด
+                  <button
+                    onClick={() => setShowAllServices(!showAllServices)}
+                    className="text-emerald-600 text-sm font-medium flex items-center hover:text-emerald-700 transition-colors"
+                  >
+                    {showAllServices ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
-                      className="w-4 h-4 ml-1"
+                      className={`w-4 h-4 ml-1 transition-transform ${
+                        showAllServices ? "rotate-90" : ""
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -475,14 +481,28 @@ function AppContent() {
                     </svg>
                   </button>
                 </div>
-                <div className="-mx-3 sm:-mx-4 md:-mx-6">
-                  <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-2 hide-scrollbar pl-3 sm:pl-4 md:pl-6 pr-3 sm:pr-4 md:pr-6">
+
+                <div
+                  className={`${
+                    showAllServices ? "overflow-visible" : "overflow-x-auto"
+                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                >
+                  <div
+                    className={`${
+                      showAllServices
+                        ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
+                        : "flex gap-6 sm:gap-8"
+                    } px-3 sm:px-4 md:px-6`}
+                  >
                     {miniApps.map((app) => (
                       <div
                         key={app.id}
-                        className="flex-shrink-0 bg-white rounded-2xl shadow-md p-4 w-32 cursor-pointer hover:shadow-lg transition"
+                        className="flex flex-col items-center cursor-pointer flex-shrink-0"
+                        style={
+                          showAllServices ? {} : { width: "calc(25% - 18px)" }
+                        }
                       >
-                        <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center aspect-square mb-2 overflow-hidden">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
                           <img
                             src={process.env.PUBLIC_URL + app.image}
                             alt={app.label}
@@ -492,7 +512,7 @@ function AppContent() {
                             }}
                           />
                         </div>
-                        <p className="text-xs font-medium text-gray-800 text-center leading-tight">
+                        <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
                           {app.label}
                         </p>
                       </div>
@@ -511,7 +531,7 @@ function AppContent() {
                     onClick={() => setShowAllAppLinks(!showAllAppLinks)}
                     className="text-emerald-600 text-sm font-medium flex items-center"
                   >
-                    ดูทั้งหมด
+                    {showAllAppLinks ? "ย่อลง" : "ดูทั้งหมด"}
                     <svg
                       className="w-4 h-4 ml-1"
                       fill="none"
@@ -522,20 +542,22 @@ function AppContent() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        d="M9 5l7 7-7 7"
+                        d={showAllAppLinks ? "M5 15l7-7 7 7" : "M9 5l7 7-7 7"}
                       ></path>
                     </svg>
                   </button>
                 </div>
+
                 {!showAllAppLinks ? (
-                  <div className="-mx-3 sm:-mx-4 md:-mx-6">
-                    <div className="flex space-x-3 sm:space-x-4 overflow-x-auto pb-2 hide-scrollbar pl-3 sm:pl-4 md:pl-6 pr-3 sm:pr-4 md:pr-6">
+                  <div className="overflow-x-auto pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6">
+                    <div className="flex gap-6 sm:gap-8 px-3 sm:px-4 md:px-6">
                       {appLinks.slice(0, 4).map((service) => (
                         <div
                           key={service.id}
-                          className="flex-shrink-0 bg-white rounded-2xl shadow-md p-4 w-32 cursor-pointer hover:shadow-lg transition"
+                          className="flex flex-col items-center cursor-pointer flex-shrink-0"
+                          style={{ width: "calc(25% - 18px)" }}
                         >
-                          <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center aspect-square mb-2 overflow-hidden">
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
                             <img
                               src={process.env.PUBLIC_URL + service.image}
                               alt={service.label}
@@ -545,7 +567,7 @@ function AppContent() {
                               }}
                             />
                           </div>
-                          <p className="text-xs font-medium text-gray-800 text-center leading-tight">
+                          <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
                             {service.label}
                           </p>
                         </div>
@@ -553,13 +575,13 @@ function AppContent() {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-4 gap-6 sm:gap-8">
                     {appLinks.map((service) => (
                       <div
                         key={service.id}
-                        className="bg-white rounded-2xl shadow-md p-3 cursor-pointer hover:shadow-lg transition"
+                        className="flex flex-col items-center cursor-pointer"
                       >
-                        <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center aspect-square mb-2 overflow-hidden">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
                           <img
                             src={process.env.PUBLIC_URL + service.image}
                             alt={service.label}
@@ -569,7 +591,7 @@ function AppContent() {
                             }}
                           />
                         </div>
-                        <p className="text-[10px] font-medium text-gray-800 text-center leading-tight">
+                        <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
                           {service.label}
                         </p>
                       </div>
