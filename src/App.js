@@ -63,28 +63,28 @@ const officialServices = [
     id: "ai-chatbot",
     label: "นัดพบแพทย์",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-calendar.png",
+    image: "/img/icon-appointment.png",
     route: "/app/docmeet",
   },
   {
     id: "mental-health",
     label: "ตอบปัญหาสุขภาพด้วย Ai",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/ai-icon.png",
+    image: "/img/icon-ai.png",
     route: "/app/chatai",
   },
   {
     id: "health-tips",
     label: "ปรึกษาแพทย์ทางไกล",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/incon-telemed.png",
+    image: "/img/icon-telemedicine.png",
     route: "/app/telemed",
   },
   {
     id: "health-emergency",
-    label: "เจ็บป่วยฉุกเฉิน",
+    label: "อุบัติเหตุ/เจ็บป่วยฉุกเฉิน",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/emergency.png",
+    image: "/img/icon-emergency.png",
     route: "/app/telemed",
   },
 ];
@@ -349,7 +349,23 @@ function AppContent() {
                     onClick={handleUserClick}
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg sm:text-xl font-bold cursor-pointer shadow-md"
                   >
-                    {isLoggedIn ? "ส" : "?"}
+                    {isLoggedIn ? (
+                      "ส"
+                    ) : (
+                      <svg
+                        className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        ></path>
+                      </svg>
+                    )}
                   </div>
                   <div onClick={handleUserClick} className="cursor-pointer">
                     <p className="text-white text-xs sm:text-sm font-medium">
@@ -369,6 +385,27 @@ function AppContent() {
 
                 {/* Right side - Icons */}
                 <div className="flex items-center space-x-3 sm:space-x-4">
+                  {isLoggedIn && (
+                    <button
+                      onClick={handleLogout}
+                      className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition"
+                    >
+                      <svg
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        ></path>
+                      </svg>
+                    </button>
+                  )}
+
                   {/* Bell Icon */}
                   <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
                     <svg
@@ -413,7 +450,7 @@ function AppContent() {
 
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
-                <section className="-mx-3 sm:-mx-4 md:-mx-6">
+                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-10">
                   <div className="px-3 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
@@ -425,7 +462,7 @@ function AppContent() {
                           <div
                             className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2`}
                           >
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
+                            <div className="w-16 h-16 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
                               <img
                                 src={process.env.PUBLIC_URL + link.image}
                                 alt={link.label}
@@ -451,7 +488,7 @@ function AppContent() {
           </div>
 
           {/* Bottom white section */}
-          <div className="bg-white">
+          <div className="bg-white rounded-t-3xl relative z-20 -mt-6">
             <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
               {/* Mini Apps - บริการแนะนำ */}
               <section>
