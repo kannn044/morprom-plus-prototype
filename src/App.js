@@ -277,6 +277,16 @@ function AppContent() {
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("home");
   const [showAllServices, setShowAllServices] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleOfficialServiceClick = (service) => {
     if (!isLoggedIn) {
@@ -337,11 +347,10 @@ function AppContent() {
       `}</style>
       <div className="min-h-screen bg-white">
         <div className="max-w-md mx-auto min-h-screen shadow-2xl">
-          {/* Top gradient section */}
-          <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative">
-            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
-            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
-              {/* Header */}
+          {/* Fixed Header */}
+          <div className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${isScrolled ? 'shadow-lg' : ''}`}>
+            {/* <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div> */}
+            <div className="p-3 sm:p-4 md:p-6 relative">
               <header className="flex items-center justify-between">
                 {/* Left side - Profile */}
                 <div className="flex items-center space-x-2 sm:space-x-3">
@@ -447,10 +456,16 @@ function AppContent() {
                   </button>
                 </div>
               </header>
+            </div>
+          </div>
 
+          {/* Top gradient section */}
+          <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative z-10">
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
+            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
-                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-12">
+                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-24">
                   <div className="px-3 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
