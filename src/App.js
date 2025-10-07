@@ -63,28 +63,28 @@ const officialServices = [
     id: "ai-chatbot",
     label: "นัดพบแพทย์",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-calendar.png",
+    image: "/img/icon-appointment.png",
     route: "/app/docmeet",
   },
   {
     id: "mental-health",
     label: "ตอบปัญหาสุขภาพด้วย Ai",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/ai-icon.png",
+    image: "/img/icon-ai.png",
     route: "/app/chatai",
   },
   {
     id: "health-tips",
     label: "ปรึกษาแพทย์ทางไกล",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/incon-telemed.png",
+    image: "/img/icon-telemedicine.png",
     route: "/app/telemed",
   },
   {
     id: "health-emergency",
-    label: "เจ็บป่วยฉุกเฉิน",
+    label: "อุบัติเหตุ\nเจ็บป่วยฉุกเฉิน",
     gradient: "from-emerald-400  to-lime-100",
-    image: "/img/emergency.png",
+    image: "/img/icon-emergency.png",
     route: "/app/telemed",
   },
 ];
@@ -277,6 +277,16 @@ function AppContent() {
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("home");
   const [showAllServices, setShowAllServices] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleOfficialServiceClick = (service) => {
     if (!isLoggedIn) {
@@ -337,11 +347,14 @@ function AppContent() {
       `}</style>
       <div className="min-h-screen bg-white">
         <div className="max-w-md mx-auto min-h-screen shadow-2xl">
-          {/* Top gradient section */}
-          <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative">
-            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
-            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
-              {/* Header */}
+          {/* Fixed Header */}
+          <div
+            className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${
+              isScrolled ? "shadow-lg" : ""
+            }`}
+          >
+            {/* <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div> */}
+            <div className="p-3 sm:p-4 md:p-6 relative">
               <header className="flex items-center justify-between">
                 {/* Left side - Profile */}
                 <div className="flex items-center space-x-2 sm:space-x-3">
@@ -349,7 +362,23 @@ function AppContent() {
                     onClick={handleUserClick}
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg sm:text-xl font-bold cursor-pointer shadow-md"
                   >
-                    {isLoggedIn ? "ส" : "?"}
+                    {isLoggedIn ? (
+                      "ส"
+                    ) : (
+                      <svg
+                        className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        ></path>
+                      </svg>
+                    )}
                   </div>
                   <div onClick={handleUserClick} className="cursor-pointer">
                     <p className="text-white text-xs sm:text-sm font-medium">
@@ -369,6 +398,27 @@ function AppContent() {
 
                 {/* Right side - Icons */}
                 <div className="flex items-center space-x-3 sm:space-x-4">
+                  {isLoggedIn && (
+                    <button
+                      onClick={handleLogout}
+                      className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition"
+                    >
+                      <svg
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        ></path>
+                      </svg>
+                    </button>
+                  )}
+
                   {/* Bell Icon */}
                   <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
                     <svg
@@ -410,10 +460,16 @@ function AppContent() {
                   </button>
                 </div>
               </header>
+            </div>
+          </div>
 
+          {/* Top gradient section */}
+          <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative z-10">
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
+            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
-                <section className="-mx-3 sm:-mx-4 md:-mx-6">
+                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-24">
                   <div className="px-3 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
@@ -425,7 +481,7 @@ function AppContent() {
                           <div
                             className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2`}
                           >
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
+                            <div className="w-16 h-16 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
                               <img
                                 src={process.env.PUBLIC_URL + link.image}
                                 alt={link.label}
@@ -436,7 +492,7 @@ function AppContent() {
                               />
                             </div>
                           </div>
-                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1">
+                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1 whitespace-pre-line">
                             {link.label}
                           </span>
                         </div>
@@ -451,7 +507,7 @@ function AppContent() {
           </div>
 
           {/* Bottom white section */}
-          <div className="bg-white">
+          <div className="bg-white rounded-t-3xl relative z-20 -mt-6">
             <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
               {/* Mini Apps - บริการแนะนำ */}
               <section>
@@ -846,14 +902,16 @@ function AppContent() {
 
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-4 pointer-events-none z-40">
-        <div className="max-w-md w-full flex items-stretch justify-between gap-3 pointer-events-auto mx-8 px-4">
-          <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-6 py-3 flex items-center justify-around shadow-2xl flex-1">
+        <div className="max-w-md w-full flex items-center justify-between gap-3 pointer-events-auto mx-8 px-4">
+          <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 flex items-center justify-around shadow-2xl flex-1 h-16">
+            {/* ปุ่ม หน้าแรก */}
             <button
               onClick={() => setActiveTab("home")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "home" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -885,12 +943,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม บริการ */}
             <button
               onClick={() => setActiveTab("service")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "service" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -924,12 +984,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม สแกน */}
             <button
               onClick={() => setActiveTab("qr")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "qr" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -961,12 +1023,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม ข่าว */}
             <button
               onClick={() => setActiveTab("news")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "news" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -999,7 +1063,7 @@ function AppContent() {
             </button>
           </div>
 
-          <button className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-4 shadow-2xl hover:bg-white/30 transition-all flex-shrink-0 flex items-center justify-center">
+          <button className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full w-16 h-16 shadow-2xl hover:bg-white/30 transition-all flex-shrink-0 flex items-center justify-center">
             <svg
               className="w-6 h-6 text-gray-700"
               fill="none"
