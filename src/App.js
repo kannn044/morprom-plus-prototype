@@ -4,6 +4,10 @@ import DocMeet from "./docmeet";
 import ChatAI from "./chatai";
 import Telemed from "./telemed";
 import DocMeetDetail from "./docmeet_detail";
+import BottomNavigation from "./components/buttom-navigation-bar/ButtomNavigationBar";
+import TopNavigationBar from "./components/top-navigation-bar/TopNavigationBar";
+import BlankPage from "./components/blank-page/BlankPage";
+import HealthInfoCard from "./components/health-information/HealthInformation";
 
 // Service item data
 const miniApps = [
@@ -13,6 +17,7 @@ const miniApps = [
     badge: "Public",
     badgeColor: "blue",
     image: "/img/epayment.png",
+    route: "/app/external/blank",
   },
   {
     id: "moph-refer",
@@ -20,6 +25,7 @@ const miniApps = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/mophrefer.jpeg",
+    route: "/app/external/blank",
   },
   {
     id: "son-buddy",
@@ -27,6 +33,7 @@ const miniApps = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/son.jpeg",
+    route: "/app/external/blank",
   },
   {
     id: "mor-prom",
@@ -34,6 +41,7 @@ const miniApps = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/morprom.png",
+    route: "/app/external/blank",
   },
   {
     id: "pink-blue",
@@ -41,6 +49,7 @@ const miniApps = [
     badge: "Public",
     badgeColor: "blue",
     image: "/img/book.png",
+    route: "/app/external/blank",
   },
   {
     id: "yellow-book",
@@ -48,6 +57,7 @@ const miniApps = [
     badge: "Public",
     badgeColor: "blue",
     image: "/img/book.png",
+    route: "/app/external/blank",
   },
   {
     id: "blue-book",
@@ -55,6 +65,7 @@ const miniApps = [
     badge: "Public",
     badgeColor: "blue",
     image: "/img/book.png",
+    route: "/app/external/blank",
   },
 ];
 
@@ -96,6 +107,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/30.webp",
+    route: "/app/external/blank",
   },
   {
     id: "emergency-ems",
@@ -103,6 +115,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/sam.png",
+    route: "/app/external/blank",
   },
   {
     id: "thai-health",
@@ -110,6 +123,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/sss.png",
+    route: "/app/external/blank",
   },
   {
     id: "khunlook",
@@ -117,6 +131,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/khunlook.png",
+    route: "/app/external/blank",
   },
   {
     id: "ya-and-you",
@@ -124,6 +139,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/ya.png",
+    route: "/app/external/blank",
   },
   {
     id: "gis-health",
@@ -131,6 +147,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/gis.png",
+    route: "/app/external/blank",
   },
   {
     id: "phonphai",
@@ -138,6 +155,7 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/phonphai.png",
+    route: "/app/external/blank",
   },
   {
     id: "thai-first-aid",
@@ -145,27 +163,9 @@ const appLinks = [
     badge: "Official",
     badgeColor: "green",
     image: "/img/thaif.png",
+    route: "/app/external/blank",
   },
 ];
-
-// Icon components
-// const SearchIcon = () => (
-//   <svg
-//     className="h-4 w-4 sm:h-5 sm:w-5 text-white"
-//     xmlns="http://www.w3.org/2000/svg"
-//     width="24"
-//     height="24"
-//     viewBox="0 0 24 24"
-//     fill="none"
-//     stroke="currentColor"
-//     strokeWidth="2"
-//     strokeLinecap="round"
-//     strokeLinejoin="round"
-//   >
-//     <circle cx="11" cy="11" r="8"></circle>
-//     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-//   </svg>
-// );
 
 // Login Modal Component
 const LoginModal = ({ onClose, onLogin }) => (
@@ -300,6 +300,18 @@ function AppContent() {
     }
   };
 
+  const handleMiniAppClick = (service) => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+    } else {
+      if (service.route) {
+        navigate(service.route);
+      } else {
+        console.log("Accessing service:", service.label);
+      }
+    }
+  };
+
   const handleLogin = (method) => {
     console.log("Logging in with:", method);
     const userData = {
@@ -324,6 +336,8 @@ function AppContent() {
     setShowUserMenu(false);
     sessionStorage.removeItem("isLoggedIn");
     sessionStorage.removeItem("userData");
+    console.log("User logged out");
+    navigate("/app/");
   };
 
   const handleUserClick = () => {
@@ -348,120 +362,12 @@ function AppContent() {
       <div className="min-h-screen bg-white">
         <div className="max-w-md mx-auto min-h-screen shadow-2xl">
           {/* Fixed Header */}
-          <div
-            className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${
-              isScrolled ? "shadow-lg" : ""
-            }`}
-          >
-            {/* <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div> */}
-            <div className="p-3 sm:p-4 md:p-6 relative">
-              <header className="flex items-center justify-between">
-                {/* Left side - Profile */}
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <div
-                    onClick={handleUserClick}
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg sm:text-xl font-bold cursor-pointer shadow-md"
-                  >
-                    {isLoggedIn ? (
-                      "ส"
-                    ) : (
-                      <svg
-                        className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        ></path>
-                      </svg>
-                    )}
-                  </div>
-                  <div onClick={handleUserClick} className="cursor-pointer">
-                    <p className="text-white text-xs sm:text-sm font-medium">
-                      {isLoggedIn ? "สวัสดี" : "ยินดีต้อนรับ"}
-                    </p>
-                    {isLoggedIn ? (
-                      <p className="text-white text-sm sm:text-base font-bold">
-                        สมหมาย ทองสุก
-                      </p>
-                    ) : (
-                      <button className="text-white text-sm sm:text-base font-bold hover:text-white/80 transition">
-                        เข้าสู่ระบบ
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right side - Icons */}
-                <div className="flex items-center space-x-3 sm:space-x-4">
-                  {isLoggedIn && (
-                    <button
-                      onClick={handleLogout}
-                      className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition"
-                    >
-                      <svg
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                        ></path>
-                      </svg>
-                    </button>
-                  )}
-
-                  {/* Bell Icon */}
-                  <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                    <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                      ></path>
-                    </svg>
-                  </button>
-
-                  {/* Settings Icon */}
-                  <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
-                    <svg
-                      className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      ></path>
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </header>
-            </div>
-          </div>
+          <TopNavigationBar
+            isLoggedIn={isLoggedIn}
+            isScrolled={isScrolled}
+            onUserClick={handleUserClick}
+            onLogout={handleLogout}
+          />
 
           {/* Top gradient section */}
           <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative z-10">
@@ -479,7 +385,7 @@ function AppContent() {
                           className="cursor-pointer transition-transform hover:scale-105"
                         >
                           <div
-                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2`}
+                            className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2 backdrop-blur-sm`}
                           >
                             <div className="w-16 h-16 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
                               <img
@@ -552,6 +458,7 @@ function AppContent() {
                   >
                     {miniApps.map((app) => (
                       <div
+                        onClick={() => handleMiniAppClick(app)}
                         key={app.id}
                         className="flex flex-col items-center cursor-pointer flex-shrink-0"
                         style={
@@ -589,7 +496,9 @@ function AppContent() {
                   >
                     {showAllAppLinks ? "ย่อลง" : "ดูทั้งหมด"}
                     <svg
-                      className="w-4 h-4 ml-1"
+                      className={`w-4 h-4 ml-1 transition-transform ${
+                        showAllAppLinks ? "rotate-90" : ""
+                      }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -598,7 +507,7 @@ function AppContent() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        d={showAllAppLinks ? "M5 15l7-7 7 7" : "M9 5l7 7-7 7"}
+                        d="M9 5l7 7-7 7"
                       ></path>
                     </svg>
                   </button>
@@ -609,6 +518,7 @@ function AppContent() {
                     <div className="flex gap-6 sm:gap-8 px-3 sm:px-4 md:px-6">
                       {appLinks.slice(0, 4).map((service) => (
                         <div
+                          onClick={() => handleMiniAppClick(service)}
                           key={service.id}
                           className="flex flex-col items-center cursor-pointer flex-shrink-0"
                           style={{ width: "calc(25% - 18px)" }}
@@ -634,6 +544,7 @@ function AppContent() {
                   <div className="grid grid-cols-4 gap-6 sm:gap-8">
                     {appLinks.map((service) => (
                       <div
+                        onClick={() => handleMiniAppClick(service)}
                         key={service.id}
                         className="flex flex-col items-center cursor-pointer"
                       >
@@ -659,427 +570,12 @@ function AppContent() {
           </div>
 
           {/* Health Information Card */}
-          {isLoggedIn && (
-            <section className="px-3 sm:px-4 md:px-6 pb-20">
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                  ข้อมูลสุขภาพของคุณ
-                </h2>
-              </div>
-              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 sm:p-5 shadow-md border border-emerald-100">
-                <div className="flex items-center mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-md">
-                    ส
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-lg font-bold text-gray-800">
-                      สมหมาย ทองสุก
-                    </h3>
-                    <p className="text-sm text-gray-600">อายุ 35 ปี</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-white rounded-xl p-3 shadow-sm">
-                    <div className="flex items-center mb-1">
-                      <svg
-                        className="w-4 h-4 text-blue-500 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-                        ></path>
-                      </svg>
-                      <p className="text-xs text-gray-500">ส่วนสูง</p>
-                    </div>
-                    <p className="text-lg font-bold text-gray-800">
-                      170 <span className="text-sm font-normal">cm</span>
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-xl p-3 shadow-sm">
-                    <div className="flex items-center mb-1">
-                      <svg
-                        className="w-4 h-4 text-orange-500 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
-                        ></path>
-                      </svg>
-                      <p className="text-xs text-gray-500">น้ำหนัก</p>
-                    </div>
-                    <p className="text-lg font-bold text-gray-800">
-                      68 <span className="text-sm font-normal">kg</span>
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-xl p-3 shadow-sm">
-                    <div className="flex items-center mb-1">
-                      <svg
-                        className="w-4 h-4 text-emerald-500 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                        ></path>
-                      </svg>
-                      <p className="text-xs text-gray-500">BMI</p>
-                    </div>
-                    <p className="text-lg font-bold text-emerald-600">
-                      23.5{" "}
-                      <span className="text-xs font-normal text-gray-600">
-                        ปกติ
-                      </span>
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-xl p-3 shadow-sm">
-                    <div className="flex items-center mb-1">
-                      <svg
-                        className="w-4 h-4 text-red-500 mr-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        ></path>
-                      </svg>
-                      <p className="text-xs text-gray-500">ความดันโลหิต</p>
-                    </div>
-                    <p className="text-lg font-bold text-gray-800">
-                      120<span className="text-sm font-normal">/80</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Blood Pressure Chart */}
-                <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-red-500 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                        ></path>
-                      </svg>
-                      <h4 className="text-sm font-bold text-gray-800">
-                        กราฟความดันโลหิต
-                      </h4>
-                    </div>
-                    <span className="text-xs text-gray-500">7 วันล่าสุด</span>
-                  </div>
-
-                  <div className="flex items-end justify-between h-32 gap-2">
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "65%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "55%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">จ</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "70%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "58%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">อ</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "62%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "52%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">พ</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "68%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "56%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">พฤ</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "64%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "54%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">ศ</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-400 to-red-300 rounded-t-lg mb-1"
-                        style={{ height: "66%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-400 to-blue-300 rounded-t-lg mb-1"
-                        style={{ height: "55%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-500 mt-1">ส</span>
-                    </div>
-                    <div className="flex-1 flex flex-col items-center justify-end">
-                      <div
-                        className="w-full bg-gradient-to-t from-red-500 to-red-400 rounded-t-lg mb-1 shadow-md"
-                        style={{ height: "72%" }}
-                      ></div>
-                      <div
-                        className="w-full bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-lg mb-1 shadow-md"
-                        style={{ height: "60%" }}
-                      ></div>
-                      <span className="text-[10px] text-gray-700 font-medium mt-1">
-                        อา
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-center gap-4 mt-4">
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-gradient-to-br from-red-400 to-red-500 rounded mr-1"></div>
-                      <span className="text-xs text-gray-600">
-                        Systolic (บน)
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-3 h-3 bg-gradient-to-br from-blue-400 to-blue-500 rounded mr-1"></div>
-                      <span className="text-xs text-gray-600">
-                        Diastolic (ล่าง)
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white py-2.5 rounded-xl text-sm font-medium hover:from-emerald-600 hover:to-teal-700 transition shadow-md">
-                  ดูข้อมูลสุขภาพทั้งหมด
-                </button>
-              </div>
-            </section>
-          )}
+          {isLoggedIn && <HealthInfoCard />}
         </div>
       </div>
 
       {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-4 pointer-events-none z-40">
-        <div className="max-w-md w-full flex items-center justify-between gap-3 pointer-events-auto mx-8 px-4">
-          <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 flex items-center justify-around shadow-2xl flex-1 h-16">
-            {/* ปุ่ม หน้าแรก */}
-            <button
-              onClick={() => setActiveTab("home")}
-              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
-            >
-              <div
-                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
-                  // <-- แก้ไขที่นี่
-                  activeTab === "home" ? "bg-white/30 backdrop-blur-md" : ""
-                }`}
-              ></div>
-              <div className="relative z-10 flex flex-col items-center">
-                <svg
-                  className={`w-6 h-6 ${
-                    activeTab === "home" ? "text-emerald-600" : "text-gray-600"
-                  }`}
-                  fill={activeTab === "home" ? "currentColor" : "none"}
-                  stroke="currentColor"
-                  strokeWidth={activeTab === "home" ? "0" : "2"}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  ></path>
-                </svg>
-                <span
-                  className={`text-xs mt-1 block ${
-                    activeTab === "home"
-                      ? "text-emerald-600 font-medium"
-                      : "text-gray-600"
-                  }`}
-                >
-                  หน้าแรก
-                </span>
-              </div>
-            </button>
-
-            {/* ปุ่ม บริการ */}
-            <button
-              onClick={() => setActiveTab("service")}
-              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
-            >
-              <div
-                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
-                  // <-- แก้ไขที่นี่
-                  activeTab === "service" ? "bg-white/30 backdrop-blur-md" : ""
-                }`}
-              ></div>
-              <div className="relative z-10 flex flex-col items-center">
-                <svg
-                  className={`w-6 h-6 ${
-                    activeTab === "service"
-                      ? "text-emerald-600"
-                      : "text-gray-600"
-                  }`}
-                  fill={activeTab === "service" ? "currentColor" : "none"}
-                  stroke="currentColor"
-                  strokeWidth={activeTab === "service" ? "0" : "2"}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  ></path>
-                </svg>
-                <span
-                  className={`text-xs mt-1 block ${
-                    activeTab === "service"
-                      ? "text-emerald-600 font-medium"
-                      : "text-gray-600"
-                  }`}
-                >
-                  บริการ
-                </span>
-              </div>
-            </button>
-
-            {/* ปุ่ม สแกน */}
-            <button
-              onClick={() => setActiveTab("qr")}
-              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
-            >
-              <div
-                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
-                  // <-- แก้ไขที่นี่
-                  activeTab === "qr" ? "bg-white/30 backdrop-blur-md" : ""
-                }`}
-              ></div>
-              <div className="relative z-10 flex flex-col items-center">
-                <svg
-                  className={`w-6 h-6 ${
-                    activeTab === "qr" ? "text-emerald-600" : "text-gray-600"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-                  ></path>
-                </svg>
-                <span
-                  className={`text-xs mt-1 block ${
-                    activeTab === "qr"
-                      ? "text-emerald-600 font-medium"
-                      : "text-gray-600"
-                  }`}
-                >
-                  สแกน
-                </span>
-              </div>
-            </button>
-
-            {/* ปุ่ม ข่าว */}
-            <button
-              onClick={() => setActiveTab("news")}
-              className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
-            >
-              <div
-                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
-                  // <-- แก้ไขที่นี่
-                  activeTab === "news" ? "bg-white/30 backdrop-blur-md" : ""
-                }`}
-              ></div>
-              <div className="relative z-10 flex flex-col items-center">
-                <svg
-                  className={`w-6 h-6 ${
-                    activeTab === "news" ? "text-emerald-600" : "text-gray-600"
-                  }`}
-                  fill={activeTab === "news" ? "currentColor" : "none"}
-                  stroke="currentColor"
-                  strokeWidth={activeTab === "news" ? "0" : "2"}
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-                  ></path>
-                </svg>
-                <span
-                  className={`text-xs mt-1 block ${
-                    activeTab === "news"
-                      ? "text-emerald-600 font-medium"
-                      : "text-gray-600"
-                  }`}
-                >
-                  ข่าว
-                </span>
-              </div>
-            </button>
-          </div>
-
-          <button className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full w-16 h-16 shadow-2xl hover:bg-white/30 transition-all flex-shrink-0 flex items-center justify-center">
-            <svg
-              className="w-6 h-6 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-      </div>
+      <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
 
       {/* Modals */}
       {showLoginModal && (
@@ -1117,6 +613,7 @@ export default function App() {
         <Route path="/app/hospital/:hospcode" element={<DocMeetDetail />} />
         <Route path="/app/chatai" element={<ChatAI />} />
         <Route path="/app/telemed" element={<Telemed />} />
+        <Route path="/app/external/blank" element={<BlankPage />} />
       </Routes>
     </BrowserRouter>
   );
