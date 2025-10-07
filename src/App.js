@@ -450,7 +450,7 @@ function AppContent() {
 
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
-                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-10">
+                <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-12">
                   <div className="px-3 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
