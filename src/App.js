@@ -284,8 +284,8 @@ function AppContent() {
       setIsScrolled(window.scrollY > 0);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleOfficialServiceClick = (service) => {
@@ -348,7 +348,11 @@ function AppContent() {
       <div className="min-h-screen bg-white">
         <div className="max-w-md mx-auto min-h-screen shadow-2xl">
           {/* Fixed Header */}
-          <div className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${isScrolled ? 'shadow-lg' : ''}`}>
+          <div
+            className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${
+              isScrolled ? "shadow-lg" : ""
+            }`}
+          >
             {/* <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div> */}
             <div className="p-3 sm:p-4 md:p-6 relative">
               <header className="flex items-center justify-between">
@@ -898,14 +902,16 @@ function AppContent() {
 
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 flex justify-center pb-4 pointer-events-none z-40">
-        <div className="max-w-md w-full flex items-stretch justify-between gap-3 pointer-events-auto mx-8 px-4">
-          <div className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-6 py-3 flex items-center justify-around shadow-2xl flex-1">
+        <div className="max-w-md w-full flex items-center justify-between gap-3 pointer-events-auto mx-8 px-4">
+          <div className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 flex items-center justify-around shadow-2xl flex-1 h-16">
+            {/* ปุ่ม หน้าแรก */}
             <button
               onClick={() => setActiveTab("home")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "home" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -937,12 +943,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม บริการ */}
             <button
               onClick={() => setActiveTab("service")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "service" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -976,12 +984,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม สแกน */}
             <button
               onClick={() => setActiveTab("qr")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "qr" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -1013,12 +1023,14 @@ function AppContent() {
               </div>
             </button>
 
+            {/* ปุ่ม ข่าว */}
             <button
               onClick={() => setActiveTab("news")}
               className="relative flex flex-col items-center justify-center transition-all min-w-[60px]"
             >
               <div
-                className={`absolute inset-0 -mx-4 -my-2 rounded-full transition-all ${
+                className={`absolute inset-0 -mx-4 -my-1 rounded-full transition-all ${
+                  // <-- แก้ไขที่นี่
                   activeTab === "news" ? "bg-white/30 backdrop-blur-md" : ""
                 }`}
               ></div>
@@ -1051,7 +1063,7 @@ function AppContent() {
             </button>
           </div>
 
-          <button className="bg-white/20 backdrop-blur-xl border border-white/30 rounded-full px-4 shadow-2xl hover:bg-white/30 transition-all flex-shrink-0 flex items-center justify-center">
+          <button className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-full w-16 h-16 shadow-2xl hover:bg-white/30 transition-all flex-shrink-0 flex items-center justify-center">
             <svg
               className="w-6 h-6 text-gray-700"
               fill="none"
