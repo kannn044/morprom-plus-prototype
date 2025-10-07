@@ -82,7 +82,7 @@ const officialServices = [
   },
   {
     id: "health-emergency",
-    label: "อุบัติเหตุ/เจ็บป่วยฉุกเฉิน",
+    label: "อุบัติเหตุ\nเจ็บป่วยฉุกเฉิน",
     gradient: "from-emerald-400  to-lime-100",
     image: "/img/icon-emergency.png",
     route: "/app/telemed",
@@ -473,7 +473,7 @@ function AppContent() {
                               />
                             </div>
                           </div>
-                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1">
+                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1 whitespace-pre-line">
                             {link.label}
                           </span>
                         </div>
