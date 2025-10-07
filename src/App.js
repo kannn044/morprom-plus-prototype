@@ -8,6 +8,7 @@ import BottomNavigation from "./components/buttom-navigation-bar/ButtomNavigatio
 import TopNavigationBar from "./components/top-navigation-bar/TopNavigationBar";
 import BlankPage from "./components/blank-page/BlankPage";
 import HealthInfoCard from "./components/health-information/HealthInformation";
+import EmergencyHelp from "./components/emergency-health/EmergencyHealth";
 
 // Service item data
 const miniApps = [
@@ -96,7 +97,7 @@ const officialServices = [
     label: "อุบัติเหตุ\nเจ็บป่วยฉุกเฉิน",
     gradient: "from-emerald-400  to-lime-100",
     image: "/img/icon-emergency.png",
-    route: "/app/telemed",
+    route: "/app/emergency",
   },
 ];
 
@@ -613,6 +614,7 @@ export default function App() {
         <Route path="/app/hospital/:hospcode" element={<DocMeetDetail />} />
         <Route path="/app/chatai" element={<ChatAI />} />
         <Route path="/app/telemed" element={<Telemed />} />
+        <Route path="/app/emergency" element={<EmergencyHelp />} />
         <Route path="/app/external/blank" element={<BlankPage />} />
       </Routes>
     </BrowserRouter>
