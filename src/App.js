@@ -111,10 +111,10 @@ const appLinks = [
   },
   {
     id: "emergency-ems",
-    label: "ระบบแจ้งเหตุฉุกเฉิน EMS 1669",
+    label: "สมุนไพรเฟิร์ส",
     badge: "Official",
     badgeColor: "green",
-    image: "/img/ems.png",
+    image: "/img/sam.png",
     route: "/app/external/blank",
   },
   {
