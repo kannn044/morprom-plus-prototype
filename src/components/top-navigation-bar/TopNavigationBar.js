@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { user } from "../../globals";
 
 const TopNavigationBar = ({ 
   isLoggedIn, 
   isScrolled, 
   onUserClick, 
-  onLogout, 
-  user 
+  onLogout 
 }) => {
 
   const handleBellClick = () => {

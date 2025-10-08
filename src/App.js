@@ -173,38 +173,89 @@ const appLinks = [
 
 
 // Login Modal Component
-const LoginModal = ({ onClose, onLogin }) => (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
-    <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
-      <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
-        เข้าสู่ระบบ
-      </h3>
-      <p className="text-xs sm:text-sm text-gray-600 text-center">
-        เลือกวิธีการเข้าสู่ระบบ
-      </p>
-      <div className="space-y-2 sm:space-y-3">
-        <button
-          onClick={() => onLogin("ThaiD")}
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition"
-        >
-          เข้าสู่ระบบด้วย ThaiD
-        </button>
-        <button
-          onClick={() => onLogin("HealthID")}
-          className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-emerald-600 hover:to-emerald-700 transition"
-        >
-          เข้าสู่ระบบด้วย HealthID
-        </button>
+const LoginModal = ({ onClose, onLogin }) => {
+  const [showQR, setShowQR] = React.useState(false);
+  const [selectedMethod, setSelectedMethod] = React.useState(null);
+
+  const handleMethodClick = (method) => {
+    setSelectedMethod(method);
+    setShowQR(true);
+    // Auto login after 2 seconds (simulating QR scan)
+    setTimeout(() => {
+      onLogin(method);
+    }, 4000);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
+        {!showQR ? (
+          <>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
+              เข้าสู่ระบบ
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 text-center">
+              เลือกวิธีการเข้าสู่ระบบ
+            </p>
+            <div className="space-y-2 sm:space-y-3">
+              <button
+                onClick={() => handleMethodClick("ThaiD")}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition"
+              >
+                เข้าสู่ระบบด้วย ThaiD
+              </button>
+              <button
+                onClick={() => handleMethodClick("HealthID")}
+                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-emerald-600 hover:to-emerald-700 transition"
+              >
+                เข้าสู่ระบบด้วย HealthID
+              </button>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
+            >
+              ยกเลิก
+            </button>
+          </>
+        ) : (
+          <>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
+              สแกน QR Code
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 text-center">
+              กรุณาสแกน QR Code ด้วย {selectedMethod}
+            </p>
+            <div className="flex justify-center py-4">
+              <div className="w-48 h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=fake-login-qr"
+                  alt="QR Code"
+                  className="w-full h-full object-contain p-2"
+                />
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
+                <span className="text-sm text-gray-600">กำลังรอการสแกน...</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setShowQR(false);
+                setSelectedMethod(null);
+              }}
+              className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
+            >
+              ยกเลิก
+            </button>
+          </>
+        )}
       </div>
-      <button
-        onClick={onClose}
-        className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
-      >
-        ยกเลิก
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 // Success Modal Component
 const SuccessModal = ({ onClose }) => (
@@ -427,7 +478,7 @@ function AppContent() {
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                    บริการแนะนำ
+                    Mini Apps
                   </h2>
                   <button
                     onClick={() => setShowAllServices(!showAllServices)}
