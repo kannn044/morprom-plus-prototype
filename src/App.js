@@ -446,7 +446,7 @@ function AppContent() {
                           <div
                             className={`bg-gradient-to-br ${link.gradient} rounded-2xl p-2 sm:p-2.5 md:p-3 flex items-center justify-center shadow-lg aspect-square mb-2 backdrop-blur-sm`}
                           >
-                            <div className="w-16 h-16 sm:w-16 sm:h-16 md:w-18 md:h-18 flex items-center justify-center">
+                            <div className="w-12 h-12 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
                               <img
                                 src={process.env.PUBLIC_URL + link.image}
                                 alt={link.label}
@@ -502,7 +502,6 @@ function AppContent() {
                     </svg>
                   </button>
                 </div>
-
                 <div
                   className={`${
                     showAllServices ? "overflow-visible" : "overflow-x-auto"
@@ -512,31 +511,49 @@ function AppContent() {
                     className={`${
                       showAllServices
                         ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
-                        : "flex gap-6 sm:gap-8"
+                        : "flex gap-3"
                     } px-3 sm:px-4 md:px-6`}
                   >
                     {miniApps.map((app) => (
                       <div
-                        onClick={() => handleMiniAppClick(app)}
                         key={app.id}
-                        className="flex flex-col items-center cursor-pointer flex-shrink-0"
+                        className="flex-shrink-0"
                         style={
-                          showAllServices ? {} : { width: "calc(25% - 18px)" }
+                          showAllServices ? {} : { width: "calc(25% - 9px)" }
                         }
                       >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
-                          <img
-                            src={process.env.PUBLIC_URL + app.image}
-                            alt={app.label}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.style.display = "none";
+                        <div
+                          onClick={() => handleMiniAppClick(app)}
+                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                          // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
+                        >
+                          <div
+                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
+                            style={{
+                              width: "48px",
+                              height: "48px",
+                              flexShrink: 0,
                             }}
-                          />
+                          >
+                            <img
+                              src={process.env.PUBLIC_URL + app.image}
+                              alt={app.label}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <p
+                            className="text-xs font-medium text-gray-800 text-center w-full mt-2"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              lineHeight: "1.2",
+                            }}
+                          >
+                            {app.label}
+                          </p>
                         </div>
-                        <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
-                          {app.label}
-                        </p>
                       </div>
                     ))}
                   </div>
@@ -547,13 +564,13 @@ function AppContent() {
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                    แนะนำสำหรับคุณ
+                    บริการที่เกี่ยวข้อง
                   </h2>
                   <button
                     onClick={() => setShowAllAppLinks(!showAllAppLinks)}
-                    className="text-emerald-600 text-sm font-medium flex items-center"
+                    className="text-emerald-600 text-sm font-medium flex items-center hover:text-emerald-700 transition-colors"
                   >
-                    {showAllAppLinks ? "ย่อลง" : "ดูทั้งหมด"}
+                    {showAllAppLinks ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
                       className={`w-4 h-4 ml-1 transition-transform ${
                         showAllAppLinks ? "rotate-90" : ""
@@ -571,18 +588,38 @@ function AppContent() {
                     </svg>
                   </button>
                 </div>
-
-                {!showAllAppLinks ? (
-                  <div className="overflow-x-auto pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6">
-                    <div className="flex gap-6 sm:gap-8 px-3 sm:px-4 md:px-6">
-                      {appLinks.slice(0, 4).map((service) => (
+                <div
+                  className={`${
+                    showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
+                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                >
+                  <div
+                    className={`${
+                      showAllAppLinks
+                        ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
+                        : "flex gap-3"
+                    } px-3 sm:px-4 md:px-6`}
+                  >
+                    {appLinks.map((service) => (
+                      <div
+                        key={service.id}
+                        className="flex-shrink-0"
+                        style={
+                          showAllAppLinks ? {} : { width: "calc(25% - 9px)" }
+                        }
+                      >
                         <div
                           onClick={() => handleMiniAppClick(service)}
-                          key={service.id}
-                          className="flex flex-col items-center cursor-pointer flex-shrink-0"
-                          style={{ width: "calc(25% - 18px)" }}
+                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                         >
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
+                          <div
+                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
+                            style={{
+                              width: "48px",
+                              height: "48px",
+                              flexShrink: 0,
+                            }}
+                          >
                             <img
                               src={process.env.PUBLIC_URL + service.image}
                               alt={service.label}
@@ -592,38 +629,23 @@ function AppContent() {
                               }}
                             />
                           </div>
-                          <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
+                          <p
+                            className="text-xs font-medium text-gray-800 text-center w-full mt-2"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              lineHeight: "1.2",
+                            }}
+                          >
                             {service.label}
                           </p>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-4 gap-6 sm:gap-8">
-                    {appLinks.map((service) => (
-                      <div
-                        onClick={() => handleMiniAppClick(service)}
-                        key={service.id}
-                        className="flex flex-col items-center cursor-pointer"
-                      >
-                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden mb-2 hover:scale-105 transition-transform">
-                          <img
-                            src={process.env.PUBLIC_URL + service.image}
-                            alt={service.label}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                            }}
-                          />
-                        </div>
-                        <p className="text-xs font-medium text-gray-800 text-center leading-tight w-full">
-                          {service.label}
-                        </p>
                       </div>
                     ))}
                   </div>
-                )}
+                </div>
               </section>
             </div>
           </div>
