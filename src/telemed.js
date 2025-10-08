@@ -16,28 +16,28 @@ function Telemed() {
         {
             id: 1,
             name: "นพ. สมชาย เก่งมาก",
-            picture: `${process.env.PUBLIC_URL}/img/mor.png`,
+            picture: `${process.env.PUBLIC_URL}/img/mor1.webp`,
             specialist: "อายุรแพทย์",
             status: "online"
         },
         {
             id: 2,
             name: "พญ. สวยจริง เก่งจัง",
-            picture: `${process.env.PUBLIC_URL}/img/mor.png`,
+            picture: `${process.env.PUBLIC_URL}/img/mor2.jpeg`,
             specialist: "กุมารแพทย์",
             status: "online"
         },
         {
             id: 3,
             name: "นพ. หล่อ เท่ห์",
-            picture: `${process.env.PUBLIC_URL}/img/mor.png`,
+            picture: `${process.env.PUBLIC_URL}/img/mor3.jpeg`,
             specialist: "แพทย์ผิวหนัง",
             status: "offline"
         },
         {
             id: 4,
             name: "นพ. ใจดี มากมาย",
-            picture: `${process.env.PUBLIC_URL}/img/mor.png`,
+            picture: `${process.env.PUBLIC_URL}/img/mor4.webp`,
             specialist: "แพทย์ทั่วไป",
             status: "online"
         }
@@ -84,53 +84,60 @@ function Telemed() {
 
     if (!isInCall) {
         return (
-            <div className="min-h-screen bg-white">
-                <TopNavigationBar isLoggedIn={isLoggedIn} />
-                <div className="max-w-md mx-auto px-4 pt-32">
-                    {/* <h1 className="text-2xl font-bold text-gray-800 mb-4">ปรึกษาแพทย์ทางไกล</h1> */}
-                    <div className="space-y-4">
-                        {doctors.map(doctor => (
-                            <div key={doctor.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                                <div className="p-4 flex items-center space-x-4">
-                                    <img 
-                                        src={doctor.picture} 
-                                        alt={doctor.name} 
-                                        className="w-20 h-20 rounded-full object-cover"
-                                    />
-                                    <div className="flex-1">
-                                        <h2 className="text-lg font-semibold text-gray-800">{doctor.name}</h2>
-                                        <p className="text-gray-600">{doctor.specialist}</p>
-                                        <div className="flex items-center mt-2">
-                                            <span className={`inline-block w-3 h-3 rounded-full mr-2 ${
-                                                doctor.status === 'online' ? 'bg-green-500' : 'bg-gray-500'
-                                            }`}></span>
-                                            <span className="text-sm capitalize">{doctor.status}</span>
+            <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+                <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+                    <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
+                        <button onClick={() => navigate(-1)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <h1 className="text-lg sm:text-xl font-bold">ปรึกษาแพทย์ทางไกล</h1>
+                        <div className="w-6"></div>
+                    </header>
+                    <div className="min-h-screen bg-white">
+                        <div className="space-y-4">
+                            {doctors.map(doctor => (
+                                <div key={doctor.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                    <div className="p-4 flex items-center space-x-4">
+                                        <img
+                                            src={doctor.picture}
+                                            alt={doctor.name}
+                                            className="w-20 h-20 rounded-full object-cover"
+                                        />
+                                        <div className="flex-1">
+                                            <h2 className="text-lg font-semibold text-gray-800">{doctor.name}</h2>
+                                            <p className="text-gray-600">{doctor.specialist}</p>
+                                            <div className="flex items-center mt-2">
+                                                <span className={`inline-block w-3 h-3 rounded-full mr-2 ${doctor.status === 'online' ? 'bg-green-500' : 'bg-gray-500'
+                                                    }`}></span>
+                                                <span className="text-sm capitalize">{doctor.status}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <button 
-                                        onClick={() => handleCall(doctor)}
-                                        disabled={doctor.status === 'offline'}
-                                        className={`px-4 py-2 rounded-lg font-semibold text-white ${
-                                            doctor.status === 'online' 
-                                                ? 'bg-emerald-500 hover:bg-emerald-600' 
+                                        <button
+                                            onClick={() => handleCall(doctor)}
+                                            disabled={doctor.status === 'offline'}
+                                            className={`px-4 py-2 rounded-lg font-semibold text-white ${doctor.status === 'online'
+                                                ? 'bg-emerald-500 hover:bg-emerald-600'
                                                 : 'bg-gray-400 cursor-not-allowed'
-                                        }`}
-                                    >
-                                        Call
-                                    </button>
+                                                }`}
+                                        >
+                                            Call
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
+                    <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
                 </div>
-                <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
             </div>
         );
     }
 
     return (
+
         <div className="min-h-screen bg-gray-900 text-white">
-            <TopNavigationBar isLoggedIn={isLoggedIn} />
             <div className="relative w-full h-screen">
                 <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover"></video>
 

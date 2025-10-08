@@ -431,11 +431,11 @@ function AppContent() {
           {/* Top gradient section */}
           <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative z-10">
             <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
-            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
+            <div className="p-3 sm:p-2 md:p-6 space-y-4 sm:space-y-6 relative z-10">
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
                 <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-24">
-                  <div className="px-3 sm:px-4 md:px-6">
+                  <div className="px-2 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
                         <div
@@ -486,9 +486,8 @@ function AppContent() {
                   >
                     {showAllServices ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
-                      className={`w-4 h-4 ml-1 transition-transform ${
-                        showAllServices ? "rotate-90" : ""
-                      }`}
+                      className={`w-4 h-4 ml-1 transition-transform ${showAllServices ? "rotate-90" : ""
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -503,16 +502,14 @@ function AppContent() {
                   </button>
                 </div>
                 <div
-                  className={`${
-                    showAllServices ? "overflow-visible" : "overflow-x-auto"
-                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                  className={`${showAllServices ? "overflow-visible" : "overflow-x-auto"
+                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
                 >
                   <div
-                    className={`${
-                      showAllServices
+                    className={`${showAllServices
                         ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
                         : "flex gap-3"
-                    } px-3 sm:px-4 md:px-6`}
+                      } px-3 sm:px-4 md:px-6`}
                   >
                     {miniApps.map((app) => (
                       <div
@@ -525,7 +522,7 @@ function AppContent() {
                         <div
                           onClick={() => handleMiniAppClick(app)}
                           className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                          // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
+                        // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
                         >
                           <div
                             className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
@@ -572,9 +569,8 @@ function AppContent() {
                   >
                     {showAllAppLinks ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
-                      className={`w-4 h-4 ml-1 transition-transform ${
-                        showAllAppLinks ? "rotate-90" : ""
-                      }`}
+                      className={`w-4 h-4 ml-1 transition-transform ${showAllAppLinks ? "rotate-90" : ""
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -589,16 +585,14 @@ function AppContent() {
                   </button>
                 </div>
                 <div
-                  className={`${
-                    showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
-                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                  className={`${showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
+                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
                 >
                   <div
-                    className={`${
-                      showAllAppLinks
+                    className={`${showAllAppLinks
                         ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
                         : "flex gap-3"
-                    } px-3 sm:px-4 md:px-6`}
+                      } px-3 sm:px-4 md:px-6`}
                   >
                     {appLinks.map((service) => (
                       <div
