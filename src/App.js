@@ -9,6 +9,8 @@ import TopNavigationBar from "./components/top-navigation-bar/TopNavigationBar";
 import BlankPage from "./components/blank-page/BlankPage";
 import HealthInfoCard from "./components/health-information/HealthInformation";
 import EmergencyHelp from "./components/emergency-health/EmergencyHealth";
+import NotificationPage from './notification';
+import { user } from "./globals";
 
 // Service item data
 const miniApps = [
@@ -168,39 +170,92 @@ const appLinks = [
   },
 ];
 
+
+
 // Login Modal Component
-const LoginModal = ({ onClose, onLogin }) => (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
-    <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
-      <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
-        เข้าสู่ระบบ
-      </h3>
-      <p className="text-xs sm:text-sm text-gray-600 text-center">
-        เลือกวิธีการเข้าสู่ระบบ
-      </p>
-      <div className="space-y-2 sm:space-y-3">
-        <button
-          onClick={() => onLogin("ThaiD")}
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition"
-        >
-          เข้าสู่ระบบด้วย ThaiD
-        </button>
-        <button
-          onClick={() => onLogin("HealthID")}
-          className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-emerald-600 hover:to-emerald-700 transition"
-        >
-          เข้าสู่ระบบด้วย HealthID
-        </button>
+const LoginModal = ({ onClose, onLogin }) => {
+  const [showQR, setShowQR] = React.useState(false);
+  const [selectedMethod, setSelectedMethod] = React.useState(null);
+
+  const handleMethodClick = (method) => {
+    setSelectedMethod(method);
+    setShowQR(true);
+    // Auto login after 2 seconds (simulating QR scan)
+    setTimeout(() => {
+      onLogin(method);
+    }, 4000);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
+        {!showQR ? (
+          <>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
+              เข้าสู่ระบบ
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 text-center">
+              เลือกวิธีการเข้าสู่ระบบ
+            </p>
+            <div className="space-y-2 sm:space-y-3">
+              <button
+                onClick={() => handleMethodClick("ThaiD")}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-blue-600 hover:to-blue-700 transition"
+              >
+                เข้าสู่ระบบด้วย ThaiD
+              </button>
+              <button
+                onClick={() => handleMethodClick("HealthID")}
+                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium hover:from-emerald-600 hover:to-emerald-700 transition"
+              >
+                เข้าสู่ระบบด้วย HealthID
+              </button>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
+            >
+              ยกเลิก
+            </button>
+          </>
+        ) : (
+          <>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800 text-center">
+              สแกน QR Code
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-600 text-center">
+              กรุณาสแกน QR Code ด้วย {selectedMethod}
+            </p>
+            <div className="flex justify-center py-4">
+              <div className="w-48 h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                <img
+                  src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=fake-login-qr"
+                  alt="QR Code"
+                  className="w-full h-full object-contain p-2"
+                />
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
+                <span className="text-sm text-gray-600">กำลังรอการสแกน...</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setShowQR(false);
+                setSelectedMethod(null);
+              }}
+              className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
+            >
+              ยกเลิก
+            </button>
+          </>
+        )}
       </div>
-      <button
-        onClick={onClose}
-        className="w-full bg-gray-200 text-gray-700 py-2 rounded-lg text-sm sm:text-base font-medium hover:bg-gray-300 transition"
-      >
-        ยกเลิก
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 // Success Modal Component
 const SuccessModal = ({ onClose }) => (
@@ -237,15 +292,17 @@ const SuccessModal = ({ onClose }) => (
 );
 
 // User Menu Component
-const UserMenu = ({ onLogout, onClose }) => (
+const UserMenu = ({ onLogout, onClose, user }) => (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
     <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
       <div className="text-center">
-        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mx-auto mb-2 sm:mb-3 flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
-          ส
-        </div>
+        <img
+          src={process.env.PUBLIC_URL + user.picture}
+          alt={user.name}
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-2 sm:mb-3 object-cover"
+        />
         <h3 className="text-lg sm:text-xl font-bold text-gray-800">
-          สมหมาย ทองสุก
+          {user.name}
         </h3>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">บัญชีผู้ใช้</p>
       </div>
@@ -322,7 +379,7 @@ function AppContent() {
     console.log("Logging in with:", method);
     const userData = {
       method: method,
-      username: "สมหมาย ทองสุก",
+      username: user.name,
       loginTime: new Date().toISOString(),
     };
 
@@ -373,16 +430,17 @@ function AppContent() {
             isScrolled={isScrolled}
             onUserClick={handleUserClick}
             onLogout={handleLogout}
+            user={user}
           />
 
           {/* Top gradient section */}
           <div className="bg-gradient-to-r from-teal-600 to-green-600 pb-8 relative z-10">
             <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/30 via-black/10 to-transparent"></div>
-            <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 relative z-10">
+            <div className="p-3 sm:p-2 md:p-6 space-y-4 sm:space-y-6 relative z-10">
               <main className="space-y-4 sm:space-y-5">
                 {/* Official Services - 4 cards */}
                 <section className="-mx-3 sm:-mx-4 md:-mx-6 mt-24">
-                  <div className="px-3 sm:px-4 md:px-6">
+                  <div className="px-2 sm:px-4 md:px-6">
                     <div className="grid grid-cols-4 gap-4 sm:gap-5 md:gap-6">
                       {officialServices.map((link) => (
                         <div
@@ -425,7 +483,7 @@ function AppContent() {
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                    บริการหลักจาก สธ.
+                    Mini Apps
                   </h2>
                   <button
                     onClick={() => setShowAllServices(!showAllServices)}
@@ -433,9 +491,8 @@ function AppContent() {
                   >
                     {showAllServices ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
-                      className={`w-4 h-4 ml-1 transition-transform ${
-                        showAllServices ? "rotate-90" : ""
-                      }`}
+                      className={`w-4 h-4 ml-1 transition-transform ${showAllServices ? "rotate-90" : ""
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -450,16 +507,14 @@ function AppContent() {
                   </button>
                 </div>
                 <div
-                  className={`${
-                    showAllServices ? "overflow-visible" : "overflow-x-auto"
-                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                  className={`${showAllServices ? "overflow-visible" : "overflow-x-auto"
+                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
                 >
                   <div
-                    className={`${
-                      showAllServices
+                    className={`${showAllServices
                         ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
                         : "flex gap-3"
-                    } px-3 sm:px-4 md:px-6`}
+                      } px-3 sm:px-4 md:px-6`}
                   >
                     {miniApps.map((app) => (
                       <div
@@ -472,7 +527,7 @@ function AppContent() {
                         <div
                           onClick={() => handleMiniAppClick(app)}
                           className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                          // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
+                        // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
                         >
                           <div
                             className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
@@ -519,9 +574,8 @@ function AppContent() {
                   >
                     {showAllAppLinks ? "ย่อกลับ" : "ดูทั้งหมด"}
                     <svg
-                      className={`w-4 h-4 ml-1 transition-transform ${
-                        showAllAppLinks ? "rotate-90" : ""
-                      }`}
+                      className={`w-4 h-4 ml-1 transition-transform ${showAllAppLinks ? "rotate-90" : ""
+                        }`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -536,16 +590,14 @@ function AppContent() {
                   </button>
                 </div>
                 <div
-                  className={`${
-                    showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
-                  } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                  className={`${showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
+                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
                 >
                   <div
-                    className={`${
-                      showAllAppLinks
+                    className={`${showAllAppLinks
                         ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
                         : "flex gap-3"
-                    } px-3 sm:px-4 md:px-6`}
+                      } px-3 sm:px-4 md:px-6`}
                   >
                     {appLinks.map((service) => (
                       <div
@@ -598,7 +650,7 @@ function AppContent() {
           </div>
 
           {/* Health Information Card */}
-          {isLoggedIn && <HealthInfoCard />}
+          {isLoggedIn && <HealthInfoCard user={user} />}
         </div>
       </div>
 
@@ -626,6 +678,7 @@ function AppContent() {
         <UserMenu
           onLogout={handleLogout}
           onClose={() => setShowUserMenu(false)}
+          user={user}
         />
       )}
     </>
@@ -643,6 +696,7 @@ export default function App() {
         <Route path="/app/telemed" element={<Telemed />} />
         <Route path="/app/emergency" element={<EmergencyHelp />} />
         <Route path="/app/external/blank" element={<BlankPage />} />
+        <Route path="/app/notification" element={<NotificationPage />} />
       </Routes>
     </BrowserRouter>
   );

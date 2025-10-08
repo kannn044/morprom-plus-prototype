@@ -1,16 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { user } from "../../globals";
 
-const TopNavigationBar = ({ 
-  isLoggedIn, 
-  isScrolled, 
-  onUserClick, 
-  onLogout 
+const TopNavigationBar = ({
+  isLoggedIn,
+  isScrolled,
+  onUserClick,
+  onLogout
 }) => {
+
+  const handleBellClick = () => {
+    const dummyNotifications = [
+      { header: 'นัดหมายใหม่', content: 'คุณมีนัดหมายกับ นพ. สมชาย เวลา 10:00 น.' },
+      { header: 'ผลตรวจสุขภาพ', content: 'ผลตรวจสุขภาพของคุณพร้อมให้ดูแล้ว' },
+    ];
+    sessionStorage.setItem('notifications', JSON.stringify(dummyNotifications));
+  };
+
   return (
     <div
-      className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${
-        isScrolled ? "shadow-lg" : ""
-      }`}
+      className={`fixed top-0 left-0 right-0 max-w-md mx-auto z-50 bg-gradient-to-r from-teal-600 to-green-600 transition-shadow duration-300 ${isScrolled ? "shadow-lg" : ""
+        }`}
     >
       <div className="p-3 sm:p-4 md:p-6 relative">
         <header className="flex items-center justify-between">
@@ -18,10 +28,14 @@ const TopNavigationBar = ({
           <div className="flex items-center space-x-2 sm:space-x-3">
             <div
               onClick={onUserClick}
-              className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg sm:text-xl font-bold cursor-pointer shadow-md"
+              className="w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg sm:text-xl font-bold cursor-pointer shadow-md overflow-hidden"
             >
               {isLoggedIn ? (
-                "ส"
+                <img
+                  src={process.env.PUBLIC_URL + user.picture}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <svg
                   className="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600"
@@ -44,7 +58,7 @@ const TopNavigationBar = ({
               </p>
               {isLoggedIn ? (
                 <p className="text-white text-sm sm:text-base font-bold">
-                  สมหมาย ทองสุก
+                  {user.name}
                 </p>
               ) : (
                 <button className="text-white text-sm sm:text-base font-bold hover:text-white/80 transition">
@@ -78,7 +92,7 @@ const TopNavigationBar = ({
             )}
 
             {/* Bell Icon */}
-            <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
+            <Link to="/app/notification" onClick={handleBellClick} className="relative w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">
               <svg
                 className="w-5 h-5 sm:w-6 sm:h-6 text-white"
                 fill="none"
@@ -92,7 +106,10 @@ const TopNavigationBar = ({
                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                 ></path>
               </svg>
-            </button>
+              {isLoggedIn && (
+                <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+              )}
+            </Link>
 
             {/* Settings Icon */}
             <button className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center hover:bg-white/30 transition">

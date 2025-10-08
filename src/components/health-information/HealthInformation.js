@@ -1,6 +1,6 @@
 import React from "react";
 
-const HealthInfoCard = () => {
+const HealthInfoCard = ({ user }) => {
   // ข้อมูลความดันโลหิต 7 วันย้อนหลัง
   const bloodPressureData = [
     { day: "จ", systolic: 118, diastolic: 78 },
@@ -33,14 +33,16 @@ const HealthInfoCard = () => {
       </div>
       <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 sm:p-5 shadow-md border border-emerald-100">
         <div className="flex items-center mb-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-md">
-            ส
-          </div>
+          <img
+            src={process.env.PUBLIC_URL + user.picture}
+            alt={user.name}
+            className="w-14 h-14 rounded-full object-cover shadow-md"
+          />
           <div className="ml-3">
             <h3 className="text-lg font-bold text-gray-800">
-              สมหมาย ทองสุก
+              {user.name}
             </h3>
-            <p className="text-sm text-gray-600">อายุ 35 ปี</p>
+            <p className="text-sm text-gray-600">อายุ 40 ปี</p>
           </div>
         </div>
 
