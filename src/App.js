@@ -9,6 +9,8 @@ import TopNavigationBar from "./components/top-navigation-bar/TopNavigationBar";
 import BlankPage from "./components/blank-page/BlankPage";
 import HealthInfoCard from "./components/health-information/HealthInformation";
 import EmergencyHelp from "./components/emergency-health/EmergencyHealth";
+import NotificationPage from './notification';
+import { user } from "./globals";
 
 // Service item data
 const miniApps = [
@@ -168,6 +170,8 @@ const appLinks = [
   },
 ];
 
+
+
 // Login Modal Component
 const LoginModal = ({ onClose, onLogin }) => (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
@@ -237,15 +241,17 @@ const SuccessModal = ({ onClose }) => (
 );
 
 // User Menu Component
-const UserMenu = ({ onLogout, onClose }) => (
+const UserMenu = ({ onLogout, onClose, user }) => (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
     <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
       <div className="text-center">
-        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full mx-auto mb-2 sm:mb-3 flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
-          ส
-        </div>
+        <img
+          src={process.env.PUBLIC_URL + user.picture}
+          alt={user.name}
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-2 sm:mb-3 object-cover"
+        />
         <h3 className="text-lg sm:text-xl font-bold text-gray-800">
-          สมหมาย ทองสุก
+          {user.name}
         </h3>
         <p className="text-xs sm:text-sm text-gray-500 mt-1">บัญชีผู้ใช้</p>
       </div>
@@ -317,7 +323,7 @@ function AppContent() {
     console.log("Logging in with:", method);
     const userData = {
       method: method,
-      username: "สมหมาย ทองสุก",
+      username: user.name,
       loginTime: new Date().toISOString(),
     };
 
@@ -368,6 +374,7 @@ function AppContent() {
             isScrolled={isScrolled}
             onUserClick={handleUserClick}
             onLogout={handleLogout}
+            user={user}
           />
 
           {/* Top gradient section */}
@@ -571,7 +578,7 @@ function AppContent() {
           </div>
 
           {/* Health Information Card */}
-          {isLoggedIn && <HealthInfoCard />}
+          {isLoggedIn && <HealthInfoCard user={user} />}
         </div>
       </div>
 
@@ -599,6 +606,7 @@ function AppContent() {
         <UserMenu
           onLogout={handleLogout}
           onClose={() => setShowUserMenu(false)}
+          user={user}
         />
       )}
     </>
@@ -616,6 +624,7 @@ export default function App() {
         <Route path="/app/telemed" element={<Telemed />} />
         <Route path="/app/emergency" element={<EmergencyHelp />} />
         <Route path="/app/external/blank" element={<BlankPage />} />
+        <Route path="/app/notification" element={<NotificationPage />} />
       </Routes>
     </BrowserRouter>
   );
