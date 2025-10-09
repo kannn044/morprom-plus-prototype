@@ -105,6 +105,38 @@ const officialServices = [
 
 const appLinks = [
   {
+    id: "health-rider",
+    label: "Health Rider",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/hri.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "lr",
+    label: "ล้อมรักษ์",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/lr.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "smo",
+    label: "Smart อสม.",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/smo.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "pp",
+    label: "ผูกพันธุ์",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/pp.png",
+    route: "/app/external/blank",
+  },
+  {
     id: "covid-tracker",
     label: "สิทธิ 30 บาท (สปสช.)",
     badge: "Official",
@@ -457,7 +489,7 @@ function AppContent() {
                               />
                             </div>
                           </div>
-                          <span className="font-bold text-xs sm:text-sm leading-tight text-center text-white block px-1 whitespace-pre-line">
+                          <span className="font-bold text-sm sm:text-sm leading-tight text-center text-white block px-1 whitespace-pre-line">
                             {link.label}
                           </span>
                         </div>
@@ -474,100 +506,17 @@ function AppContent() {
           {/* Bottom white section */}
           <div className="bg-white rounded-t-3xl relative z-20 -mt-6">
             <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
-              {/* Mini Apps - บริการแนะนำ */}
+              {/* App Links*/}
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                    Mini Apps
-                  </h2>
-                  <button
-                    onClick={() => setShowAllServices(!showAllServices)}
-                    className="text-emerald-600 text-sm font-medium flex items-center hover:text-emerald-700 transition-colors"
-                  >
-                    {showAllServices ? "ย่อกลับ" : "ดูทั้งหมด"}
-                    <svg
-                      className={`w-4 h-4 ml-1 transition-transform ${showAllServices ? "rotate-90" : ""
-                        }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 5l7 7-7 7"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-                <div
-                  className={`${showAllServices ? "overflow-visible" : "overflow-x-auto"
-                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
-                >
-                  <div
-                    className={`${showAllServices
-                        ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
-                        : "flex gap-3"
-                      } px-3 sm:px-4 md:px-6`}
-                  >
-                    {miniApps.map((app) => (
-                      <div
-                        key={app.id}
-                        className="flex-shrink-0"
-                        style={
-                          showAllServices ? {} : { width: "calc(25% - 9px)" }
-                        }
-                      >
-                        <div
-                          onClick={() => handleMiniAppClick(app)}
-                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                        // style={{ aspectRatio: '1/1' }} // อาจจะต้องเอา aspectRatio ออกเพื่อให้ความสูงยืดได้
-                        >
-                          <div
-                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
-                            style={{
-                              width: "48px",
-                              height: "48px",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <img
-                              src={process.env.PUBLIC_URL + app.image}
-                              alt={app.label}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <p
-                            className="text-xs font-medium text-gray-800 text-center w-full mt-2"
-                            style={{
-                              display: "-webkit-box",
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
-                              lineHeight: "1.2",
-                            }}
-                          >
-                            {app.label}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* App Links - แนะนำสำหรับคุณ */}
-              <section>
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <h2 className="text-base sm:text-lg font-bold text-gray-800">
-                    บริการที่เกี่ยวข้อง
+                  <h2 className="text-base text-lg font-bold text-gray-800">
+                    มินิแอป
                   </h2>
                   <button
                     onClick={() => setShowAllAppLinks(!showAllAppLinks)}
-                    className="text-emerald-600 text-sm font-medium flex items-center hover:text-emerald-700 transition-colors"
+                    className="text-emerald-600 text-lg font-medium flex items-center hover:text-emerald-700 transition-colors"
                   >
-                    {showAllAppLinks ? "ย่อกลับ" : "ดูทั้งหมด"}
+                    {showAllAppLinks ? "ย่อกลับ" : "ดูเพิ่มเติม"}
                     <svg
                       className={`w-4 h-4 ml-1 transition-transform ${showAllAppLinks ? "rotate-90" : ""
                         }`}
@@ -590,8 +539,8 @@ function AppContent() {
                 >
                   <div
                     className={`${showAllAppLinks
-                        ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
-                        : "flex gap-3"
+                      ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
+                      : "flex gap-3"
                       } px-3 sm:px-4 md:px-6`}
                   >
                     {appLinks.map((service) => (
@@ -609,8 +558,8 @@ function AppContent() {
                           <div
                             className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
                             style={{
-                              width: "48px",
-                              height: "48px",
+                              width: "72px",
+                              height: "72px",
                               flexShrink: 0,
                             }}
                           >
@@ -624,7 +573,7 @@ function AppContent() {
                             />
                           </div>
                           <p
-                            className="text-xs font-medium text-gray-800 text-center w-full mt-2"
+                            className="text-sm font-bold text-gray-800 text-center w-full mt-2"
                             style={{
                               display: "-webkit-box",
                               WebkitLineClamp: 2,
@@ -634,6 +583,63 @@ function AppContent() {
                             }}
                           >
                             {service.label}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Mini Apps - บริการแนะนำ */}
+              <section>
+                <div
+                  className={`${showAllServices ? "overflow-visible" : "overflow-x-auto"
+                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                >
+                  <div
+                    className={`${showAllServices
+                      ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
+                      : "flex gap-3"
+                      } px-3 sm:px-4 md:px-6`}
+                  >
+                    {miniApps.map((app) => (
+                      <div
+                        key={app.id}
+                        className="flex-shrink-0"
+                        style={
+                          showAllServices ? {} : { width: "calc(25% - 9px)" }
+                        }
+                      >
+                        <div
+                          onClick={() => handleMiniAppClick(app)}
+                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                        >
+                          <div
+                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
+                            style={{
+                              width: "72px",
+                              height: "72px",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <img
+                              src={process.env.PUBLIC_URL + app.image}
+                              alt={app.label}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <p
+                            className="text-xs font-bold text-gray-800 text-center w-full mt-2"
+                            style={{
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden",
+                              lineHeight: "1.2",
+                            }}
+                          >
+                            {app.label}
                           </p>
                         </div>
                       </div>

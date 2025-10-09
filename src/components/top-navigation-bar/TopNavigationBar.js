@@ -53,11 +53,11 @@ const TopNavigationBar = ({
               )}
             </div>
             <div onClick={onUserClick} className="cursor-pointer">
-              <p className="text-white text-xs sm:text-sm font-medium">
+              <p className="text-white text-md sm:text-sm font-medium">
                 {isLoggedIn ? "สวัสดี" : "ยินดีต้อนรับ"}
               </p>
               {isLoggedIn ? (
-                <p className="text-white text-sm sm:text-base font-bold">
+                <p className="text-white text-lg sm:text-base font-bold">
                   {user.name}
                 </p>
               ) : (
