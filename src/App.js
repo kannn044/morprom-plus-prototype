@@ -12,8 +12,151 @@ import EmergencyHelp from "./components/emergency-health/EmergencyHealth";
 import NotificationPage from './notification';
 import { user } from "./globals";
 
-// Service item data
-const miniApps = [
+
+const officialServices = [
+  {
+    id: "ai-chatbot",
+    label: "นัดพบแพทย์",
+    gradient: "from-emerald-400  to-lime-100",
+    image: "/img/icon-appointment.png",
+    route: "/app/docmeet",
+  },
+  {
+    id: "mental-health",
+    label: "ตอบปัญหาสุขภาพด้วย Ai",
+    gradient: "from-emerald-400  to-lime-100",
+    image: "/img/icon-ai.png",
+    route: "/app/chatai",
+  },
+  {
+    id: "health-tips",
+    label: "ปรึกษาแพทย์ทางไกล",
+    gradient: "from-emerald-400  to-lime-100",
+    image: "/img/icon-telemedicine.png",
+    route: "/app/telemed",
+  },
+  {
+    id: "health-emergency",
+    label: "อุบัติเหตุ\nเจ็บป่วยฉุกเฉิน",
+    gradient: "from-emerald-400  to-lime-100",
+    image: "/img/icon-emergency.png",
+    route: "/app/emergency",
+  },
+];
+
+const appLinks = [
+  {
+    id: "acc",
+    label: "ตรวจสอบสิทธิ",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/acc.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "cert",
+    label: "ใบรับรองแพทย์",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/cert.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "smo",
+    label: "Smart อสม.",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/smo.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "health-rider",
+    label: "Health Rider",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/hri.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "covid-tracker",
+    label: "สิทธิ 30 บาท (สปสช.)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/30.webp",
+    route: "/app/external/blank",
+  },
+  {
+    id: "emergency-ems",
+    label: "สมุนไพรเฟิร์ส",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/sam.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "thai-health",
+    label: "Thai Health (สร้างสุข/สสส.)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/sss.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "khunlook",
+    label: "KhunLook (คุณลูก)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/khunlook.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "pp",
+    label: "ผูกพันธุ์",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/pp.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "ya-and-you",
+    label: "ยาและคุณ (Ya&You)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/ya.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "gis-health",
+    label: "ค้นหาโรงพยาบาล (GIS Health)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/gis.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "phonphai",
+    label: "PhonPhai (พ้นภัย)",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/phonphai.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "thai-first-aid",
+    label: "Thai First Aid",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/thaif.png",
+    route: "/app/external/blank",
+  },
+  {
+    id: "lr",
+    label: "ล้อมรักษ์",
+    badge: "Official",
+    badgeColor: "green",
+    image: "/img/lr.png",
+    route: "/app/external/blank",
+  },
   {
     id: "epayment",
     label: "ePayment",
@@ -68,136 +211,6 @@ const miniApps = [
     badge: "Public",
     badgeColor: "blue",
     image: "/img/book.png",
-    route: "/app/external/blank",
-  },
-];
-
-const officialServices = [
-  {
-    id: "ai-chatbot",
-    label: "นัดพบแพทย์",
-    gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-appointment.png",
-    route: "/app/docmeet",
-  },
-  {
-    id: "mental-health",
-    label: "ตอบปัญหาสุขภาพด้วย Ai",
-    gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-ai.png",
-    route: "/app/chatai",
-  },
-  {
-    id: "health-tips",
-    label: "ปรึกษาแพทย์ทางไกล",
-    gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-telemedicine.png",
-    route: "/app/telemed",
-  },
-  {
-    id: "health-emergency",
-    label: "อุบัติเหตุ\nเจ็บป่วยฉุกเฉิน",
-    gradient: "from-emerald-400  to-lime-100",
-    image: "/img/icon-emergency.png",
-    route: "/app/emergency",
-  },
-];
-
-const appLinks = [
-  {
-    id: "health-rider",
-    label: "Health Rider",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/hri.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "lr",
-    label: "ล้อมรักษ์",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/lr.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "smo",
-    label: "Smart อสม.",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/smo.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "pp",
-    label: "ผูกพันธุ์",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/pp.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "covid-tracker",
-    label: "สิทธิ 30 บาท (สปสช.)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/30.webp",
-    route: "/app/external/blank",
-  },
-  {
-    id: "emergency-ems",
-    label: "สมุนไพรเฟิร์ส",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/sam.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "thai-health",
-    label: "Thai Health (สร้างสุข/สสส.)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/sss.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "khunlook",
-    label: "KhunLook (คุณลูก)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/khunlook.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "ya-and-you",
-    label: "ยาและคุณ (Ya&You)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/ya.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "gis-health",
-    label: "ค้นหาโรงพยาบาล (GIS Health)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/gis.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "phonphai",
-    label: "PhonPhai (พ้นภัย)",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/phonphai.png",
-    route: "/app/external/blank",
-  },
-  {
-    id: "thai-first-aid",
-    label: "Thai First Aid",
-    badge: "Official",
-    badgeColor: "green",
-    image: "/img/thaif.png",
     route: "/app/external/blank",
   },
 ];
@@ -511,7 +524,6 @@ function AppContent() {
           {/* Bottom white section */}
           <div className="bg-white rounded-t-3xl relative z-20 -mt-6">
             <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
-              {/* App Links*/}
               <section>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <h2 className="text-base text-lg font-bold text-gray-800">
@@ -539,29 +551,26 @@ function AppContent() {
                   </button>
                 </div>
                 <div
-                  className={`${showAllAppLinks ? "overflow-visible" : "overflow-x-auto"
-                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
+                  className={`${showAllAppLinks ? "overflow-visible" : "overflow-hidden"
+                    } pb-2 -mx-3 sm:-mx-4 md:-mx-6`}
                 >
                   <div
                     className={`${showAllAppLinks
                       ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
-                      : "flex gap-3"
+                      : "grid grid-cols-4 gap-4"
                       } px-3 sm:px-4 md:px-6`}
                   >
-                    {appLinks.map((service) => (
+                    {(showAllAppLinks ? appLinks : appLinks.slice(0, 8)).map((service) => (
                       <div
                         key={service.id}
                         className="flex-shrink-0"
-                        style={
-                          showAllAppLinks ? {} : { width: "calc(25% - 9px)" }
-                        }
                       >
                         <div
                           onClick={() => handleMiniAppClick(service)}
-                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                          className="flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div
-                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
+                            className="rounded-full bg-white border-2 border-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform shadow-md hover:shadow-lg"
                             style={{
                               width: "72px",
                               height: "72px",
@@ -588,63 +597,6 @@ function AppContent() {
                             }}
                           >
                             {service.label}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* Mini Apps - บริการแนะนำ */}
-              <section>
-                <div
-                  className={`${showAllServices ? "overflow-visible" : "overflow-x-auto"
-                    } pb-2 hide-scrollbar -mx-3 sm:-mx-4 md:-mx-6`}
-                >
-                  <div
-                    className={`${showAllServices
-                      ? "grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4"
-                      : "flex gap-3"
-                      } px-3 sm:px-4 md:px-6`}
-                  >
-                    {miniApps.map((app) => (
-                      <div
-                        key={app.id}
-                        className="flex-shrink-0"
-                        style={
-                          showAllServices ? {} : { width: "calc(25% - 9px)" }
-                        }
-                      >
-                        <div
-                          onClick={() => handleMiniAppClick(app)}
-                          className="flex flex-col items-center justify-between h-full bg-white rounded-2xl p-3 border border-gray-200 shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                        >
-                          <div
-                            className="rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform"
-                            style={{
-                              width: "72px",
-                              height: "72px",
-                              flexShrink: 0,
-                            }}
-                          >
-                            <img
-                              src={process.env.PUBLIC_URL + app.image}
-                              alt={app.label}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <p
-                            className="text-xs font-bold text-gray-800 text-center w-full mt-2"
-                            style={{
-                              display: "-webkit-box",
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: "vertical",
-                              overflow: "hidden",
-                              lineHeight: "1.2",
-                            }}
-                          >
-                            {app.label}
                           </p>
                         </div>
                       </div>
