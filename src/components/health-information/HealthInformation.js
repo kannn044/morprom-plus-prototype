@@ -18,11 +18,6 @@ const HealthInfoCard = ({ user }) => {
   const maxValue = Math.max(...allValues) + 10; // เพิ่ม 10 เพื่อให้มีพื้นที่ด้านบน
 
   // คำนวณความสูงของแท่งกราฟเป็นเปอร์เซ็นต์
-  const getBarHeight = (value) => {
-    const range = maxValue - minValue;
-    const normalizedValue = value - minValue;
-    return `${(normalizedValue / range) * 100}%`;
-  };
 
   return (
     <section className="px-3 sm:px-4 md:px-6 pb-20">

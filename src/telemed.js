@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopNavigationBar from './components/top-navigation-bar/TopNavigationBar';
+
 import BottomNavigation from './components/buttom-navigation-bar/ButtomNavigationBar';
 
 function Telemed() {
@@ -8,7 +8,7 @@ function Telemed() {
     const videoRef = useRef(null);
     const [isInCall, setIsInCall] = useState(false);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [, setIsLoggedIn] = useState(false);
     const [activeTab, setActiveTab] = useState("home");
 
     // Mock doctor data

@@ -379,7 +379,6 @@ function AppContent() {
   const [showUserMenu, setShowUserMenu] = React.useState(false);
   const [showSuccessModal, setShowSuccessModal] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("home");
-  const [showAllServices, setShowAllServices] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
 
   React.useEffect(() => {

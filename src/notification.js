@@ -6,7 +6,7 @@ import BottomNavigation from './components/buttom-navigation-bar/ButtomNavigatio
 const NotificationPage = () => {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = React.useState("home");
 
   useEffect(() => {

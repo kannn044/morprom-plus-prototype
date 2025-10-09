@@ -71,8 +71,6 @@ export default function DocMeetDetail() {
   
   const DELAY = 300;
 
-  const handleNavigateBack = () => setTimeout(() => navigate(-1), DELAY);
-
   const handleOpenConfirm = (item) => setTimeout(() => setConfirmItem(item), DELAY);
 
   const handleCloseConfirm = () => setTimeout(() => setConfirmItem(null), DELAY);

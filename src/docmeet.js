@@ -25,10 +25,10 @@ export default function DocMeet() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState(hospitalData);
   const [activeTab, setActiveTab] = React.useState("");
-  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+  const [isLoggedIn] = React.useState(() => {
     return sessionStorage.getItem("isLoggedIn") === "true";
   });
-  const [showLoginModal, setShowLoginModal] = React.useState(false);
+  const [, setShowLoginModal] = React.useState(false);
 
   useEffect(() => {
     const term = searchTerm.trim().toLowerCase();

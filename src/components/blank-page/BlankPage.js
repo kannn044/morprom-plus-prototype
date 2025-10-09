@@ -11,12 +11,11 @@ const BlankPage = (props) => {
   const pageLabel = location.state?.label || "บริการ";
   const pageImage = location.state?.image || null;
 
-  const [showLoginModal, setShowLoginModal] = React.useState(false);
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+  const [, setShowLoginModal] = React.useState(false);
+  const [isLoggedIn] = React.useState(() => {
     return sessionStorage.getItem("isLoggedIn") === "true";
   });
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [, setIsScrolled] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState("");
 
   React.useEffect(() => {
@@ -49,22 +48,6 @@ const BlankPage = (props) => {
         break;
       default:
         break;
-    }
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setShowUserMenu(false);
-    sessionStorage.removeItem("isLoggedIn");
-    sessionStorage.removeItem("userData");
-    navigate("/app/");
-  };
-
-  const handleUserClick = () => {
-    if (isLoggedIn) {
-      setShowUserMenu(true);
-    } else {
-      setShowLoginModal(true);
     }
   };
 

@@ -15,7 +15,9 @@ export default function EmergencyHelp() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
     return sessionStorage.getItem("isLoggedIn") === "true";
   });
+  // eslint-disable-next-line no-unused-vars
   const [showLoginModal, setShowLoginModal] = React.useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showUserMenu, setShowUserMenu] = React.useState(false);
 
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -174,6 +176,7 @@ export default function EmergencyHelp() {
             ) : (
               <>
                 <iframe
+                  title="Current Location Map"
                   width="100%"
                   height="100%"
                   frameBorder="0"
