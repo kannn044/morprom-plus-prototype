@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { user } from './globals';
 
@@ -7,6 +7,7 @@ function ChatAI() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
         const setVH = () => {
@@ -27,59 +28,139 @@ function ChatAI() {
     const handleSend = async () => {
         if (input.trim() === '' || isLoading) return;
 
-        const systemPrompt = {
-            role: "system",
-            content: "คุณเป็นผู้เชี่ยวชาญด้านการแพทย์ สามารถวิเคราะห์อาการเจ็บป่วยได้อย่างแม่นยำ หากได้ข้อมูลไม่ครบไม่สามารถวินิจฉัยได้ให้ถามกลับเพิ่อขอรายละเอียดเพิ่มเติม กรุณาตอบให้สั้นๆไม่เกิน 500 ตัวอักษรให้ได้ใจความเป็นภาษาไทยเท่านั้น"
-        };
-
         const newMessages = [...messages, { role: 'user', content: input }];
         setMessages(newMessages);
         setInput('');
         setIsLoading(true);
 
         try {
-            const response = await fetch('https://ai.moph.go.th/ollama/api/v1/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    model: 'gpt-oss:20b',
-                    messages: [systemPrompt, ...newMessages],
-                    stream: false,
-                    options: {
-                        num_predict: 500
-                    }
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
-            const aiMessage = data?.choices?.[0]?.message?.content || data?.message?.content || 'No response received';
-            setMessages([...newMessages, { role: 'assistant', content: aiMessage }]);
+            // Try new API first
+            await tryNewAPI(newMessages);
         } catch (error) {
-            console.error('Error fetching AI response:', error);
-            setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I am having trouble connecting.' }]);
+            console.error('New API failed, trying old API:', error);
+            // Fallback to old API
+            try {
+                await tryOldAPI(newMessages);
+            } catch (oldApiError) {
+                console.error('Old API also failed:', oldApiError);
+                setMessages([...newMessages, { role: 'assistant', content: 'ขออภัย ไม่สามารถเชื่อมต่อกับระบบได้ในขณะนี้ กรุณาลองใหม่อีกครั้ง' }]);
+            }
         } finally {
             setIsLoading(false);
         }
     };
 
+    const tryNewAPI = async (newMessages) => {
+        const systemPrompt = {
+            role: "system",
+            content: [{ type: "text", text: "คุณคือผู้เชี่ยวชาญด้านข้อมุลสุขภาพ สามารถวิเคราะห์อาการเบื้องต้นได้" }]
+        };
+
+        const formattedMessages = newMessages.map(msg => ({
+            role: msg.role,
+            content: [{ type: "text", text: msg.content }]
+        }));
+
+        const response = await fetch('https://ai-router.manageai.co.th/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer MAI-Jn2W6HQgSUpo4yrxlzxE1Yn2vdyWv4aea1TZtmOH84zO9raojsAsonClUBv1aB1i',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'Qwen/Qwen3-VL-235B-A22B-Instruct',
+                messages: [systemPrompt, ...formattedMessages],
+                temperature: 0.4,
+                max_tokens: 1024,
+                stream: true,
+                chat_template_kwargs: { enable_thinking: false }
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('New API response was not ok');
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let aiMessage = '';
+
+        // Add empty assistant message
+        setMessages([...newMessages, { role: 'assistant', content: '' }]);
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const data = line.slice(6);
+                    if (data === '[DONE]') continue;
+
+                    try {
+                        const parsed = JSON.parse(data);
+                        const content = parsed.choices?.[0]?.delta?.content;
+                        if (content) {
+                            aiMessage += content;
+                            setMessages([...newMessages, { role: 'assistant', content: aiMessage }]);
+                        }
+                    } catch (e) {
+                        // Skip invalid JSON
+                    }
+                }
+            }
+        }
+
+        if (!aiMessage) {
+            throw new Error('No content received from stream');
+        }
+    };
+
+    const tryOldAPI = async (newMessages) => {
+        const systemPrompt = {
+            role: "system",
+            content: "คุณเป็นผู้เชี่ยวชาญด้านการแพทย์ สามารถวิเคราะห์อาการเจ็บป่วยได้อย่างแม่นยำ หากได้ข้อมูลไม่ครบไม่สามารถวินิจฉัยได้ให้ถามกลับเพิ่อขอรายละเอียดเพิ่มเติม กรุณาตอบให้สั้นๆไม่เกิน 500 ตัวอักษรให้ได้ใจความเป็นภาษาไทยเท่านั้น"
+        };
+
+        const response = await fetch('https://ai.moph.go.th/ollama/api/v1/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'gpt-oss:20b',
+                messages: [systemPrompt, ...newMessages],
+                stream: false,
+                options: {
+                    num_predict: 500
+                }
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Old API response was not ok');
+        }
+
+        const data = await response.json();
+        const aiMessage = data?.choices?.[0]?.message?.content || data?.message?.content || 'Sorry, I am having trouble connecting.';
+        setMessages([...newMessages, { role: 'assistant', content: aiMessage }]);
+    };
+
     return (
-         <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
-                <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
-                    <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
-                        <button onClick={() => navigate(-1)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </button>
-                        <h1 className="text-lg sm:text-xl font-bold">คุยกับ AI</h1>
-                        <div className="w-6"></div>
-                    </header>
+        <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+            <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+                <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
+                    <button onClick={() => navigate(-1)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h1 className="text-lg sm:text-xl font-bold">คุยกับ AI</h1>
+                    <div className="w-6"></div>
+                </header>
 
                 <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 bg-gray-50">
                     {messages.map((msg, index) => (
