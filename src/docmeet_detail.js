@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { hospitalData } from "./docmeet";
 
-// ──────────────────────
-// Modals (UI ตามตัวอย่าง LoginModal)
-// ──────────────────────
 const ConfirmModal = ({ item, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
     <div className="bg-white rounded-2xl p-4 sm:p-6 max-w-xs sm:max-w-sm w-full space-y-3 sm:space-y-4">
@@ -72,8 +69,7 @@ export default function DocMeetDetail() {
   const [confirmItem, setConfirmItem] = useState(null);
   const [successInfo, setSuccessInfo] = useState(null);
   
-  // -- ฟังก์ชันจัดการการคลิกพร้อมหน่วงเวลา --
-  const DELAY = 300; // ตั้งค่าเวลาหน่วง (ms) ไว้ที่เดียวเพื่อแก้ไขง่าย
+  const DELAY = 300;
 
   const handleNavigateBack = () => setTimeout(() => navigate(-1), DELAY);
 
@@ -94,49 +90,49 @@ export default function DocMeetDetail() {
         date: confirmItem.date,
         clinic: confirmItem.clinic,
       });
-      setConfirmItem(null); // ปิด modal ยืนยัน
+      setConfirmItem(null);
     }, DELAY);
   };
   
   return (
-    <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
-      <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10 text-white">
-        <div className="relative flex items-center p-4 border-b border-white/30">
-          <button onClick={handleNavigateBack} className="absolute left-4 text-white" aria-label="ย้อนกลับ">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M15 19l-7-7 7-7" />
+<div className="bg-gradient-to-br from-white-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+      <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+        <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
+          <button onClick={() => navigate(-1)}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-lg sm:text-xl font-bold mx-auto">นัดหมายพบแพทย์</h1>
-        </div>
+          <h1 className="text-lg sm:text-xl font-bold">นัดหมายแพทย์</h1>
+          <div className="w-6"></div>
+        </header>
 
-        <div className="p-4">
-          <p className="text-lg font-semibold text-white/90 mt-2">{hospital.hospital_name}</p>
-          <h2 className="mt-6 mb-2 font-semibold">ตารางนัดที่ว่าง</h2>
+        <main className="p-4 overflow-y-auto">
+          <div className="bg-gray-50 p-4 rounded-lg border mb-6">
+            <p className="text-xl font-bold text-gray-800 text-center">{hospital.hospital_name}</p>
+          </div>
 
-          <div className="bg-white/20 border border-white/30 rounded-lg overflow-hidden">
+          <h2 className="text-gray-800 text-lg font-semibold mb-3">ตารางนัดที่ว่าง</h2>
+
+          <div className="space-y-3">
             {schedules.map((item) => {
               const isBooked = booked.has(item.id);
               return (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between p-3 border-b border-white/20 last:border-none"
+                  className="bg-white p-4 rounded-lg border flex items-center justify-between shadow-sm"
                 >
                   <div>
-                    <p className="text-white">{item.date}</p>
-                    <p className="text-white/80 text-sm">{item.clinic}</p>
+                    <p className="text-gray-800 font-semibold">{item.date}</p>
+                    <p className="text-gray-600 text-sm">{item.clinic}</p>
                   </div>
                   <button
                     onClick={() => handleOpenConfirm(item)}
                     disabled={isBooked}
-                    className={[
-                      "px-4 py-1 rounded-full font-medium transition",
-                      isBooked
-                        ? "bg-white/30 text-white/80 cursor-not-allowed border border-white/40"
-                        : "bg-cyan-300 text-gray-700 hover:brightness-110"
-                    ].join(" ")}
+                    className={`px-4 py-2 rounded-full font-medium transition text-sm ${isBooked
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-emerald-500 text-white hover:bg-emerald-600"
+                      }`}
                   >
                     {isBooked ? "จองแล้ว" : "จองนัด"}
                   </button>
@@ -144,7 +140,7 @@ export default function DocMeetDetail() {
               );
             })}
           </div>
-        </div>
+        </main>
       </div>
 
       {confirmItem && (

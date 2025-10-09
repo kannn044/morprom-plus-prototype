@@ -9,7 +9,7 @@ export const hospitalData = [
 
 const SearchIcon = () => (
   <svg
-    className="h-4 w-4 sm:h-5 sm:w-5 text-white"
+    className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -66,91 +66,71 @@ export default function DocMeet() {
     }
   };
 
-  // 1. สร้างฟังก์ชันใหม่สำหรับจัดการการคลิกและหน่วงเวลา
   const handleHospitalClick = (hospital) => {
-    // หน่วงเวลา 500 มิลลิวินาที (0.5 วินาที) ก่อนเปลี่ยนหน้า
     setTimeout(() => {
-      // 3. แก้ไข Path ให้เป็น String ที่ถูกต้อง
       navigate(`/app/hospital/${hospital.hospcode}`, {
         state: { hospital },
       });
-    }, 500); // <-- สามารถปรับระยะเวลาได้ตามต้องการ (หน่วยเป็น ms)
+    }, 300);
   };
 
   return (
-    <>
-      <div className="bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400 min-h-screen">
-        <div className="max-w-md mx-auto min-h-screen shadow-2xl backdrop-blur-sm bg-white/10">
-          <div className="p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6 md:space-y-8">
-            <header className="flex items-center justify-between space-x-2 sm:space-x-4">
-              <button onClick={() => navigate("/app/")} className="text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <h1 className="text-lg sm:text-xl font-bold text-white">
-                ค้นหาโรงพยาบาล
-              </h1>
-              <div className="w-6" />
-            </header>
+    <div className="bg-gradient-to-br from-white-500 via-teal-500 to-gray-400" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+      <div className="max-w-md mx-auto shadow-2xl backdrop-blur-sm bg-white/10 flex flex-col" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
+        <header className="flex items-center justify-between p-3 sm:p-4 md:p-6 text-white flex-shrink-0 sticky top-0 z-10 bg-gradient-to-br from-emerald-500 via-teal-500 to-gray-400">
+          <button onClick={() => navigate(-1)}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1 className="text-lg sm:text-xl font-bold">นัดหมายแพทย์</h1>
+          <div className="w-6"></div>
+        </header>
 
-            <main className="space-y-4 sm:space-y-6 md:space-y-8">
-              <div className="flex items-center space-x-2">
-                <div className="relative w-full">
-                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                    <SearchIcon />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="ค้นหาโรงพยาบาลหรือรหัส..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full bg-white/20 backdrop-blur-md border border-white/30 rounded-full py-1.5 sm:py-2 pl-10 pr-3 text-xs sm:text-sm text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 transition"
-                  />
-                </div>
+        <main className="p-4 space-y-4 sm:space-y-6 md:space-y-8 overflow-y-auto">
+          <div className="flex items-center space-x-2">
+            <div className="relative w-full">
+              <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                <SearchIcon />
               </div>
-
-              <div className="space-y-3">
-                {searchResults.length === 0 ? (
-                  <div className="bg-white/10 p-4 rounded-lg border border-white/20">
-                    <p className="text-white/90 text-sm">
-                      ไม่พบโรงพยาบาลที่ตรงกับคำค้น
-                    </p>
-                  </div>
-                ) : (
-                  searchResults.map((hospital) => (
-                    <div
-                      key={hospital.hospcode}
-                      className="bg-white/20 p-4 rounded-lg border border-white/30 hover:bg-white/25 transition cursor-pointer"
-                      // 2. เรียกใช้ฟังก์ชันใหม่ที่สร้างขึ้นเมื่อมีการคลิก
-                      onClick={() => handleHospitalClick(hospital)}
-                    >
-                      <p className="text-white font-bold">
-                        {hospital.hospital_name}
-                      </p>
-                      <p className="text-white/90 text-sm">
-                        รหัส: {hospital.hospcode}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div>
-            </main>
+              <input
+                type="text"
+                placeholder="ค้นหาโรงพยาบาลหรือรหัส..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-gray-100 border border-gray-300 rounded-full py-2 sm:py-3 pl-10 pr-3 text-sm sm:text-base text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+              />
+            </div>
           </div>
-        </div>
+
+          <div className="space-y-3">
+            {searchResults.length === 0 ? (
+              <div className="bg-gray-50 p-4 rounded-lg border">
+                <p className="text-gray-600 text-sm text-center">
+                  ไม่พบโรงพยาบาลที่ตรงกับคำค้น
+                </p>
+              </div>
+            ) : (
+              searchResults.map((hospital) => (
+                <div
+                  key={hospital.hospcode}
+                  className="bg-white p-4 rounded-lg border hover:bg-gray-50 transition cursor-pointer shadow-sm"
+                  onClick={() => handleHospitalClick(hospital)}
+                >
+                  <p className="text-gray-800 font-bold text-lg">
+                    {hospital.hospital_name}
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    รหัส: {hospital.hospcode}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
+        </main>
       </div>
+
       <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
-    </>
+    </div>
   );
 }
