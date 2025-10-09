@@ -395,7 +395,12 @@ function AppContent() {
       setShowLoginModal(true);
     } else {
       if (service.route) {
-        navigate(service.route);
+        navigate(service.route, {
+          state: {
+            label: service.label,
+            image: service.image,
+          },
+        });
       } else {
         console.log("Accessing service:", service.label);
       }
